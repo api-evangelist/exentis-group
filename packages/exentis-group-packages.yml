@@ -1,0 +1,56 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  npm registry, PyPI, RubyGems, crates.io, NuGet, Maven Central, Packagist, pkg.go.dev and
+  https://www.exentis-group.com/ (whole-site walk of the Yoast sitemap index)
+package_count: 0
+packages: []
+official_sdk_count: 0
+note: >-
+  Exentis Group AG publishes no client libraries in any public package registry, and there is no SDK,
+  CLI or SourceCode link anywhere in apis.yml or on www.exentis-group.com to derive candidates from.
+  This is the expected result: the company sells 3D screen-printing production systems, not software,
+  and has no developer program. The API surface this profile documents is the WordPress REST API its
+  own marketing site serves, which is consumed with any generic HTTP client and has no vendor SDK by
+  definition.
+registries_checked:
+- registry: npm
+  query: exentis
+  result: no first-party package
+- registry: pypi
+  query: exentis
+  result: no first-party package
+- registry: rubygems
+  query: exentis
+  result: no first-party package
+- registry: crates.io
+  query: exentis
+  result: no first-party package
+- registry: nuget
+  query: exentis
+  result: no first-party package
+- registry: maven-central
+  query: exentis
+  result: no first-party package
+- registry: packagist
+  query: exentis
+  result: no first-party package
+- registry: pkg.go.dev
+  query: exentis
+  result: no first-party package
+source_code:
+  github_org: null
+  note: >-
+    Two GitHub accounts share the name — github.com/exentis (a personal user, 2 repos) and
+    github.com/ExentisSoftware (an organization, 2 repos). NEITHER carries a name, company, location
+    or website field that ties it to Exentis Group AG of Stetten, and neither is linked from
+    www.exentis-group.com. Ownership cannot be proven, so no GitHubOrganization pointer is wired in
+    apis.yml. Recorded here so a later pass does not re-litigate it or wire the wrong account.
+generic_clients:
+  note: >-
+    Not first-party and NOT counted above. The surface documented here is WordPress core REST, so any
+    generic WordPress REST client works against it — but none of these are published, endorsed or
+    versioned by Exentis Group, and none is wired as an SDK pointer.
+  examples:
+  - '@wordpress/api-fetch (npm, WordPress project)'
+  - wordpress-api-client (community)

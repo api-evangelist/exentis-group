@@ -1,0 +1,284 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/ (all eight documents) + live anonymous responses from
+  https://www.exentis-group.com/wp-json/wp/v2/*
+summary: >-
+  Entity-relationship graph for the Exentis Group content API. Every entity, field and relationship
+  below was read from a live response or from the /wp-json/ discovery document. Identifiers are
+  integers, unique per entity type, allocated from one shared WordPress post-id sequence for the
+  post-like entities (Post, BlogPost, Page, MediaItem), which is why an id alone does not tell a
+  client which collection to fetch — the `type` field does.
+id_convention:
+  format: integer
+  shared_sequence: true
+  applies_to:
+  - Post
+  - BlogPost
+  - Page
+  - MediaItem
+  note: >-
+    Term ids (Category, BlogCategory) come from a separate taxonomy sequence and may collide
+    numerically with post ids. Always pair an id with its collection.
+entities:
+- name: Post
+  collection: /wp/v2/posts
+  count_at_probe: 371
+  description: News, press releases and article records.
+  key_fields:
+  - id
+  - slug
+  - title.rendered
+  - content.rendered
+  - excerpt.rendered
+  - date
+  - date_gmt
+  - modified
+  - status
+  - link
+  - lang
+  - type
+  - format
+  - sticky
+  - acf
+  - translations
+  reference_fields:
+  - author
+  - featured_media
+  - categories
+  - tags
+- name: BlogPost
+  collection: /wp/v2/blogposts
+  post_type: blog
+  count_at_probe: 16
+  description: >-
+    Site-specific custom post type behind /en/media/blog/. Registered by the Custom Post Type UI
+    plugin (cptui/v1 is mounted), so it is site configuration rather than WordPress core.
+  key_fields:
+  - id
+  - slug
+  - title.rendered
+  - content.rendered
+  - date
+  - modified
+  - status
+  - link
+  - lang
+  - translations
+  - acf
+  reference_fields:
+  - blogkategorie
+  - parent
+  notable: >-
+    Has NO author, excerpt or featured_media field — unlike Post. A client written against Post will
+    break on BlogPost.
+- name: Page
+  collection: /wp/v2/pages
+  count_at_probe: 119
+  description: Corporate site pages, hierarchical and menu-ordered.
+  key_fields:
+  - id
+  - slug
+  - title.rendered
+  - content.rendered
+  - excerpt.rendered
+  - menu_order
+  - template
+  - lang
+  - translations
+  reference_fields:
+  - author
+  - parent
+  - featured_media
+- name: MediaItem
+  collection: /wp/v2/media
+  count_at_probe: 1155
+  description: Media library attachments with generated size variants.
+  key_fields:
+  - id
+  - slug
+  - title.rendered
+  - alt_text
+  - caption.rendered
+  - description.rendered
+  - source_url
+  - filename
+  - filesize
+  - mime_type
+  - media_type
+  - media_details
+  reference_fields:
+  - author
+  - post
+  notable: >-
+    media_details.sizes carries the generated renditions with their own source_url, width and height.
+    MediaItem has no `lang` field — the media library is not translated.
+- name: Category
+  collection: /wp/v2/categories
+  taxonomy: category
+  count_at_probe: 27
+  key_fields:
+  - id
+  - slug
+  - name
+  - description
+  - count
+  - taxonomy
+  - lang
+  - translations
+  reference_fields:
+  - parent
+- name: BlogCategory
+  collection: /wp/v2/blogkategorie
+  taxonomy: blogkategorie
+  count_at_probe: 12
+  key_fields:
+  - id
+  - slug
+  - name
+  - description
+  - count
+  - taxonomy
+  - lang
+  - translations
+  reference_fields:
+  - parent
+- name: SearchResult
+  collection: /wp/v2/search
+  count_at_probe: 506
+  description: >-
+    A thin projection, not a stored entity. Carries only id, title, url, type and subtype — the
+    resolver a client uses to turn a query into a fetchable id + collection.
+  key_fields:
+  - id
+  - title
+  - url
+  - type
+  - subtype
+- name: Language
+  collection: /pll/v1/languages
+  count_at_probe: 2
+  description: Polylang language configuration (de_CH default, en_US).
+  key_fields:
+  - slug
+  - locale
+  - name
+  - w3c
+  - is_default
+  - is_rtl
+  - home_url
+  - search_url
+  - term_props.language.count
+  reference_fields:
+  - page_on_front
+  - page_for_posts
+- name: Author
+  collection: /wp/v2/users
+  count_at_probe: 4
+  description: >-
+    PERSONAL DATA — WordPress user accounts, readable anonymously, carrying name, slug, description,
+    avatar URLs and ACF fields. Documented structurally because Post, Page and MediaItem all reference
+    it and a consumer will hit it, but deliberately NOT registered as an API entry in apis.yml, NOT
+    given an OpenAPI document, and NOT packaged as an agent skill or MCP tool. No individual is named
+    anywhere in this repository.
+  key_fields:
+  - id
+  - name
+  - slug
+  - description
+  - link
+  - avatar_urls
+relationships:
+- from: Post
+  to: Author
+  type: belongs_to
+  via: author
+  cardinality: one
+  note: PII edge — see the Author entity note. Traversal is possible but not packaged.
+- from: Post
+  to: MediaItem
+  type: has_one
+  via: featured_media
+  cardinality: zero-or-one
+  note: 0 means no featured image.
+- from: Post
+  to: Category
+  type: has_many
+  via: categories
+  cardinality: many
+- from: Post
+  to: Post
+  type: has_many
+  via: translations
+  cardinality: per-language
+  note: >-
+    Polylang cross-links the German and English versions of the same object by id. This is the edge a
+    client walks to move between locales.
+- from: BlogPost
+  to: BlogCategory
+  type: has_many
+  via: blogkategorie
+  cardinality: many
+- from: BlogPost
+  to: BlogPost
+  type: belongs_to
+  via: parent
+  cardinality: zero-or-one
+- from: BlogPost
+  to: BlogPost
+  type: has_many
+  via: translations
+  cardinality: per-language
+- from: Page
+  to: Page
+  type: belongs_to
+  via: parent
+  cardinality: zero-or-one
+  note: Drives the /en/technology/..., /en/materials/... URL hierarchy.
+- from: Page
+  to: MediaItem
+  type: has_one
+  via: featured_media
+  cardinality: zero-or-one
+- from: Page
+  to: Author
+  type: belongs_to
+  via: author
+  cardinality: one
+- from: MediaItem
+  to: Post
+  type: belongs_to
+  via: post
+  cardinality: zero-or-one
+  note: >-
+    The attachment's parent object. Points into the shared post-id sequence, so it may resolve to a
+    Post, a Page or a BlogPost.
+- from: Category
+  to: Category
+  type: belongs_to
+  via: parent
+  cardinality: zero-or-one
+- from: BlogCategory
+  to: BlogCategory
+  type: belongs_to
+  via: parent
+  cardinality: zero-or-one
+- from: SearchResult
+  to: Post
+  type: resolves_to
+  via: id + subtype
+  cardinality: one
+  note: subtype names the post type; type is always "post" for content results.
+- from: Language
+  to: Page
+  type: has_one
+  via: page_on_front / page_for_posts
+  cardinality: one
+traversal_notes:
+- Every object carries a _links object (RFC 8288 curies) with self, collection, about, author,
+    replies and wp:attachment hrefs — the cheapest way to walk the graph without hard-coding paths.
+- '`_embed=true` inlines author, featured media and terms in one request; it also inlines PERSON data
+    from the Author entity, so prefer explicit `_fields` selection.'
+- '`acf` is present on every entity and holds site-specific Advanced Custom Fields content. Its shape
+    is per-object and is not part of any published contract.'
+- yoast_head and yoast_head_json are large SEO blobs on most entities. Use `_fields` to exclude them.

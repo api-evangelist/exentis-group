@@ -1,0 +1,210 @@
+openapi: 3.1.0
+info:
+  title: Exentis Group Search API
+  version: 2.0.0
+  description: 'Full-text search across every publicly readable object on www.exentis-group.com, returning
+    id, title, url, type and subtype. 506 searchable objects at probe time.
+
+
+    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/
+    and anonymous sample responses.'
+  contact:
+    name: Exentis Group AG
+    email: info@exentis-group.com
+    url: https://www.exentis-group.com/en/contact/
+  termsOfService: https://www.exentis-group.com/en/terms-of-use/
+  x-provenance:
+    method: derived
+    source: https://www.exentis-group.com/wp-json/
+    derived: '2026-08-12'
+    by: API Evangelist enrichment pipeline
+servers:
+- url: https://www.exentis-group.com/wp-json
+  description: WordPress REST API root on the Exentis Group production host.
+tags:
+- name: Search
+paths:
+  /wp/v2/search:
+    get:
+      operationId: searchSite
+      summary: Search all public objects
+      description: Full-text search across posts, blog entries, pages and terms. No authentication required.
+      tags:
+      - Search
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: subtype
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - post
+            - page
+            - blog
+            - category
+            - post_tag
+            - blogkategorie
+            - any
+          default: any
+        description: Limit results to items of one or more object subtypes.
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - post
+          - term
+          - post-format
+          default: post
+        description: Limit results to items of an object type.
+      responses:
+        '200':
+          description: Search results.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection matching the query.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+        '400':
+          $ref: '#/components/responses/Error400'
+components:
+  schemas:
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+        type:
+          type: string
+        subtype:
+          type: string
+        _links:
+          type: object
+          properties:
+            self:
+              type: array
+              items:
+                type: object
+                properties:
+                  embeddable: {}
+                  href: {}
+                  targetHints: {}
+            about:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            collection:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+      description: Structure derived from a live anonymous response; values are not reproduced here.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope (WP_Error serialized).
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
+        message:
+          type: string
+          description: Human-readable message. Localized to the site locale (de_CH on this host).
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation detail on 400 rest_invalid_param.
+      required:
+      - code
+      - message
+  responses:
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: WordPress application passwords. Not required for search.

@@ -1,0 +1,584 @@
+openapi: 3.1.0
+info:
+  title: Exentis Group Media API
+  version: 2.0.0
+  description: 'The media library of product photography, trade-fair assets, technical diagrams and documents,
+    with rendered source URLs and generated size variants. 1,155 items were readable anonymously at probe
+    time.
+
+
+    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/
+    and anonymous sample responses. Exentis Group publishes no developer portal; this documents the machine-readable
+    surface its own public host serves. Read-only without credentials; writes require a WordPress application
+    password.'
+  contact:
+    name: Exentis Group AG
+    email: info@exentis-group.com
+    url: https://www.exentis-group.com/en/contact/
+  termsOfService: https://www.exentis-group.com/en/terms-of-use/
+  x-provenance:
+    method: derived
+    source: https://www.exentis-group.com/wp-json/
+    derived: '2026-08-12'
+    by: API Evangelist enrichment pipeline
+servers:
+- url: https://www.exentis-group.com/wp-json
+  description: WordPress REST API root on the Exentis Group production host.
+tags:
+- name: Media
+paths:
+  /wp/v2/media:
+    get:
+      operationId: listMedia
+      summary: List media
+      description: Retrieve a paginated collection of media from www.exentis-group.com. No authentication
+        required. Pagination totals are returned in the X-WP-Total and X-WP-TotalPages response headers.
+      tags:
+      - Media
+      parameters:
+      - name: after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published after a given ISO8601 compliant date.
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to posts assigned to specific authors.
+      - name: author_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes posts assigned to specific authors.
+      - name: before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published before a given ISO8601 compliant date.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+      - name: media_type
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - image
+            - video
+            - text
+            - application
+            - audio
+        description: Limit result set to attachments of a particular media type or media types.
+      - name: mime_type
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to attachments of a particular MIME type or MIME types.
+      - name: modified_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified after a given ISO8601 compliant date.
+      - name: modified_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified before a given ISO8601 compliant date.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+        description: Sort collection by post attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to items with particular parent IDs.
+      - name: parent_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to all items except those of a particular parent ID.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: search_columns
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+          default: []
+        description: Array of column names to be searched.
+      - name: search_semantics
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - exact
+        description: How to interpret the search input.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to posts with one or more specific slugs.
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - inherit
+            - private
+            - trash
+          default: inherit
+        description: Limit result set to posts assigned one or more statuses.
+      responses:
+        '200':
+          description: A page of media.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection matching the query.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+        '400':
+          $ref: '#/components/responses/Error400'
+  /wp/v2/media/{id}:
+    get:
+      operationId: getMediaItem
+      summary: Retrieve a single media by id
+      description: Retrieve one object by its numeric WordPress id. No authentication required.
+      tags:
+      - Media
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Unique numeric identifier for the object.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in the response.
+          `edit` requires authentication.
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+components:
+  schemas:
+    Media:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+        date_gmt:
+          type: string
+        guid:
+          type: object
+          properties:
+            rendered:
+              type: string
+        modified:
+          type: string
+        modified_gmt:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+        title:
+          type: object
+          properties:
+            rendered:
+              type: string
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        comment_status:
+          type: string
+        ping_status:
+          type: string
+        template:
+          type: string
+        meta:
+          type: object
+          properties:
+            content-type:
+              type: string
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: array
+          items: {}
+        description:
+          type: object
+          properties:
+            rendered:
+              type: string
+        caption:
+          type: object
+          properties:
+            rendered:
+              type: string
+        alt_text:
+          type: string
+        media_type:
+          type: string
+        mime_type:
+          type: string
+        media_details:
+          type: object
+          properties:
+            width:
+              type: integer
+            height:
+              type: integer
+            file:
+              type: string
+            filesize:
+              type: integer
+            sizes:
+              type: object
+              properties:
+                thumbnail:
+                  type: object
+                  properties:
+                    file: {}
+                    width: {}
+                    height: {}
+                    filesize: {}
+                    mime_type: {}
+                    source_url: {}
+                i480x270:
+                  type: object
+                  properties:
+                    file: {}
+                    width: {}
+                    height: {}
+                    filesize: {}
+                    mime_type: {}
+                    source_url: {}
+                i240x240:
+                  type: object
+                  properties:
+                    file: {}
+                    width: {}
+                    height: {}
+                    filesize: {}
+                    mime_type: {}
+                    source_url: {}
+                i480x480:
+                  type: object
+                  properties:
+                    file: {}
+                    width: {}
+                    height: {}
+                    filesize: {}
+                    mime_type: {}
+                    source_url: {}
+                s240x240:
+                  type: object
+                  properties:
+                    file: {}
+                    width: {}
+                    height: {}
+                    filesize: {}
+                    mime_type: {}
+                    source_url: {}
+                full:
+                  type: object
+                  properties:
+                    file: {}
+                    width: {}
+                    height: {}
+                    mime_type: {}
+                    source_url: {}
+            image_meta:
+              type: object
+              properties:
+                aperture:
+                  type: string
+                credit:
+                  type: string
+                camera:
+                  type: string
+                caption:
+                  type: string
+                created_timestamp:
+                  type: string
+                copyright:
+                  type: string
+                focal_length:
+                  type: string
+                iso:
+                  type: string
+                shutter_speed:
+                  type: string
+                title:
+                  type: string
+                orientation:
+                  type: string
+                keywords:
+                  type: array
+                  items: {}
+                alt:
+                  type: string
+        post:
+          type: integer
+        source_url:
+          type: string
+        filename:
+          type: string
+        filesize:
+          type: integer
+        _links:
+          type: object
+          properties:
+            self:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+                  targetHints: {}
+            collection:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            about:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            author:
+              type: array
+              items:
+                type: object
+                properties:
+                  embeddable: {}
+                  href: {}
+            wp:attached-to:
+              type: array
+              items:
+                type: object
+                properties:
+                  embeddable: {}
+                  post_type: {}
+                  id: {}
+                  href: {}
+            curies:
+              type: array
+              items:
+                type: object
+                properties:
+                  name: {}
+                  href: {}
+                  templated: {}
+      description: Structure derived from a live anonymous response; values are not reproduced here.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope (WP_Error serialized).
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
+        message:
+          type: string
+          description: Human-readable message. Localized to the site locale (de_CH on this host).
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation detail on 400 rest_invalid_param.
+      required:
+      - code
+      - message
+  responses:
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error401:
+      description: rest_forbidden — the resource or context requires authentication.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error404:
+      description: rest_no_route or rest_post_invalid_id — no such route or object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Authorization
+        endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php. Not required for
+        the read operations documented here.'

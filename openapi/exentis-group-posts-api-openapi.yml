@@ -1,0 +1,619 @@
+openapi: 3.1.0
+info:
+  title: Exentis Group Posts API
+  version: 2.0.0
+  description: 'News, press releases and article records published on www.exentis-group.com, served as
+    JSON by the WordPress REST API. 371 posts were readable anonymously at probe time.
+
+
+    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/
+    and anonymous sample responses. Exentis Group publishes no developer portal; this documents the machine-readable
+    surface its own public host serves. Read-only without credentials; writes require a WordPress application
+    password.'
+  contact:
+    name: Exentis Group AG
+    email: info@exentis-group.com
+    url: https://www.exentis-group.com/en/contact/
+  termsOfService: https://www.exentis-group.com/en/terms-of-use/
+  x-provenance:
+    method: derived
+    source: https://www.exentis-group.com/wp-json/
+    derived: '2026-08-12'
+    by: API Evangelist enrichment pipeline
+servers:
+- url: https://www.exentis-group.com/wp-json
+  description: WordPress REST API root on the Exentis Group production host.
+tags:
+- name: Posts
+paths:
+  /wp/v2/posts:
+    get:
+      operationId: listPosts
+      summary: List posts
+      description: Retrieve a paginated collection of posts from www.exentis-group.com. No authentication
+        required. Pagination totals are returned in the X-WP-Total and X-WP-TotalPages response headers.
+      tags:
+      - Posts
+      parameters:
+      - name: after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published after a given ISO8601 compliant date.
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to posts assigned to specific authors.
+      - name: author_exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes posts assigned to specific authors.
+      - name: before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts published before a given ISO8601 compliant date.
+      - name: categories
+        in: query
+        required: false
+        schema:
+          type: object
+        description: Limit result set to items with specific terms assigned in the categories taxonomy.
+      - name: categories_exclude
+        in: query
+        required: false
+        schema:
+          type: object
+        description: Limit result set to items except those with specific terms assigned in the categories
+          taxonomy.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - standard
+            - aside
+            - chat
+            - gallery
+            - link
+            - image
+            - quote
+            - status
+            - video
+            - audio
+        description: Limit result set to items assigned one or more given formats.
+      - name: ignore_sticky
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+        description: Whether to ignore sticky posts or not.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+      - name: lang
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ''
+          - de
+          - en
+          default: ''
+        description: Limit results to a specific language. By default, results are not filtered by language.
+      - name: modified_after
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified after a given ISO8601 compliant date.
+      - name: modified_before
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+        description: Limit response to posts modified before a given ISO8601 compliant date.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - author
+          - date
+          - id
+          - include
+          - modified
+          - parent
+          - relevance
+          - slug
+          - include_slugs
+          - title
+          default: date
+        description: Sort collection by post attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: search_columns
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - post_title
+            - post_content
+            - post_excerpt
+          default: []
+        description: Array of column names to be searched.
+      - name: search_semantics
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - exact
+        description: How to interpret the search input.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to posts with one or more specific slugs.
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - publish
+            - future
+            - draft
+            - pending
+            - private
+            - trash
+            - auto-draft
+            - inherit
+            - request-pending
+            - request-confirmed
+            - request-failed
+            - request-completed
+            - acf-disabled
+            - dp-rewrite-republish
+            - any
+          default: publish
+        description: Limit result set to posts assigned one or more statuses.
+      - name: sticky
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Limit result set to items that are sticky.
+      - name: tags
+        in: query
+        required: false
+        schema:
+          type: object
+        description: Limit result set to items with specific terms assigned in the tags taxonomy.
+      - name: tags_exclude
+        in: query
+        required: false
+        schema:
+          type: object
+        description: Limit result set to items except those with specific terms assigned in the tags taxonomy.
+      - name: tax_relation
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - AND
+          - OR
+        description: Limit result set based on relationship between multiple taxonomies.
+      responses:
+        '200':
+          description: A page of posts.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection matching the query.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Posts'
+        '400':
+          $ref: '#/components/responses/Error400'
+  /wp/v2/posts/{id}:
+    get:
+      operationId: getPost
+      summary: Retrieve a single post by id
+      description: Retrieve one object by its numeric WordPress id. No authentication required.
+      tags:
+      - Posts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Unique numeric identifier for the object.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in the response.
+          `edit` requires authentication.
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+components:
+  schemas:
+    Posts:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+        date_gmt:
+          type: string
+        guid:
+          type: object
+          properties:
+            rendered:
+              type: string
+        modified:
+          type: string
+        modified_gmt:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+        title:
+          type: object
+          properties:
+            rendered:
+              type: string
+        content:
+          type: object
+          properties:
+            rendered:
+              type: string
+            protected:
+              type: boolean
+        excerpt:
+          type: object
+          properties:
+            rendered:
+              type: string
+            protected:
+              type: boolean
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        comment_status:
+          type: string
+        ping_status:
+          type: string
+        sticky:
+          type: boolean
+        template:
+          type: string
+        format:
+          type: string
+        meta:
+          type: object
+          properties:
+            content-type:
+              type: string
+            footnotes:
+              type: string
+        categories:
+          type: array
+          items:
+            type: integer
+        tags:
+          type: array
+          items: {}
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: array
+          items: {}
+        yoast_head:
+          type: string
+        yoast_head_json:
+          type: object
+          properties:
+            title:
+              type: string
+            robots:
+              type: object
+              properties:
+                index:
+                  type: string
+                follow:
+                  type: string
+            og_locale:
+              type: string
+            og_type:
+              type: string
+            og_title:
+              type: string
+            og_url:
+              type: string
+            og_site_name:
+              type: string
+            article_published_time:
+              type: string
+            author:
+              type: string
+            twitter_card:
+              type: string
+            twitter_misc:
+              type: object
+              properties:
+                Verfasst von:
+                  type: string
+            schema:
+              type: object
+              properties:
+                '@context':
+                  type: string
+                '@graph':
+                  type: array
+                  items: {}
+        lang:
+          type: string
+        translations:
+          type: object
+          properties:
+            en:
+              type: integer
+            de:
+              type: integer
+        pll_sync_post:
+          type: array
+          items: {}
+        _links:
+          type: object
+          properties:
+            self:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+                  targetHints: {}
+            collection:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            about:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            author:
+              type: array
+              items:
+                type: object
+                properties:
+                  embeddable: {}
+                  href: {}
+            replies:
+              type: array
+              items:
+                type: object
+                properties:
+                  embeddable: {}
+                  href: {}
+            version-history:
+              type: array
+              items:
+                type: object
+                properties:
+                  count: {}
+                  href: {}
+            predecessor-version:
+              type: array
+              items:
+                type: object
+                properties:
+                  id: {}
+                  href: {}
+            wp:attachment:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            wp:term:
+              type: array
+              items:
+                type: object
+                properties:
+                  taxonomy: {}
+                  embeddable: {}
+                  href: {}
+            curies:
+              type: array
+              items:
+                type: object
+                properties:
+                  name: {}
+                  href: {}
+                  templated: {}
+      description: Structure derived from a live anonymous response; values are not reproduced here.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope (WP_Error serialized).
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
+        message:
+          type: string
+          description: Human-readable message. Localized to the site locale (de_CH on this host).
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation detail on 400 rest_invalid_param.
+      required:
+      - code
+      - message
+  responses:
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error401:
+      description: rest_forbidden — the resource or context requires authentication.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error404:
+      description: rest_no_route or rest_post_invalid_id — no such route or object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Authorization
+        endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php. Not required for
+        the read operations documented here.'

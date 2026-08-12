@@ -1,0 +1,168 @@
+generated: '2026-08-12'
+method: probed
+source: live anonymous requests against https://www.exentis-group.com/wp-json/
+note: >-
+  Every request below was executed against the live host and the status recorded is the status
+  observed. Responses are described structurally rather than pasted: the media library and content
+  bodies are large, and the users collection is person data (see the exclusion note in
+  skills/_index.yml and the Author entity in data-model/). No credentials were used anywhere.
+examples:
+- name: Discover the whole surface
+  operation: discovery
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/
+  response:
+    status: 200
+    content_type: application/json
+    shape: >-
+      name, description, url, home, gmt_offset, namespaces[17], authentication{application-passwords},
+      routes{280}
+  why: >-
+    This one call is the entire contract. It is where the eight OpenAPI documents in openapi/ came
+    from, and it is what an agent should fetch first because Exentis Group publishes no reference.
+- name: Latest press releases, English only
+  operation: listPosts
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/posts?lang=en&per_page=5&orderby=date&order=desc&_fields=id,slug,date,link,title
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '185'
+      X-WP-TotalPages: '37'
+    shape: array of 5 objects, each {id, slug, date, link, title{rendered}}
+  why: >-
+    `_fields` is what makes this surface usable — without it each post carries a multi-kilobyte
+    yoast_head string. The `lang` filter is honored and reflected in the totals: 185 English posts
+    against 186 German (371 unfiltered), so the two trees are near-parity here — unlike the Polylang
+    term counts, which are not.
+- name: Full post count and pagination signal
+  operation: listPosts
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/posts?per_page=2
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '371'
+      X-WP-TotalPages: '186'
+      Link: <...?per_page=2&page=2>; rel="next"
+      Cache-Control: public
+      Allow: GET
+    shape: array of 2 post objects
+  why: The totals exist only in headers. A client that reads only the body cannot paginate correctly.
+- name: The blog custom post type
+  operation: listBlogPosts
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/blogposts?per_page=1
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '16'
+    shape: >-
+      array of 1 object with {id, slug, title, content, blogkategorie[], parent, lang, translations,
+      acf} — and NO author, excerpt or featured_media
+  why: >-
+    Demonstrates the entity divergence recorded in data-model/: code written against Post breaks here.
+- name: Resolve a query to fetchable ids
+  operation: searchSite
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/search?search=sintering&per_page=10
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '3'
+    shape: array of 3 objects {id, title, url, type, subtype} — all with subtype "blog"
+  why: >-
+    Search is the resolver. It returns subtype (post | page | blog), which is what tells a client
+    which collection to fetch the full object from. Here all three hits are blog entries, so the
+    follow-up fetch is /wp/v2/blogposts/{id}, not /wp/v2/posts/{id}.
+- name: Language configuration
+  operation: listLanguages
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/pll/v1/languages
+  response:
+    status: 200
+    shape: >-
+      array of 2 objects; de (de_CH, is_default true, 254 content items) and en (en_US, 23 content
+      items in the counted taxonomy), each with home_url, search_url, page_on_front, page_for_posts
+      and a base64 data-URI flag image
+  why: >-
+    Reveals the real asymmetry of this site — the German tree is the primary one. Also warns that a
+    naive full-object fetch pulls inline base64 images.
+- name: Media with size variants
+  operation: listMedia
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/media?search=logo&per_page=20&_fields=id,title,source_url,mime_type
+  response:
+    status: 200
+    headers:
+      X-WP-Total: '1155'
+    shape: array of 20 {id, title{rendered}, source_url, mime_type}
+  why: >-
+    How the company logo used as this profile's `image` was located
+    (https://www.exentis-group.com/app/uploads/2022/11/Logo-exentis.svg).
+error_examples:
+- name: per_page above the ceiling
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/posts?per_page=200
+  response:
+    status: 400
+    body: >-
+      {"code":"rest_invalid_param","message":"Ungültige(r) Parameter: per_page","data":{"status":400,
+      "params":{"per_page":"per_page muss zwischen 1 (einschliesslich) und 100 (einschliesslich)
+      liegen"},"details":{"per_page":{"code":"rest_out_of_bounds",...}}}}
+  why: Confirms the 100 ceiling, and shows the German-only message body.
+- name: Invalid enum value
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/posts?orderby=bogus
+  response:
+    status: 400
+    body_code: rest_invalid_param
+    sub_code: rest_not_in_enum
+    detail: >-
+      Lists the accepted values verbatim: author, date, id, include, modified, parent, relevance,
+      slug, include_slugs, title.
+  why: The error response is the most complete enum documentation this API publishes.
+- name: Non-existent id
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/posts/99999999
+  response:
+    status: 404
+    body: '{"code":"rest_post_invalid_id","message":"Die Beitrags-ID ist ungültig.","data":{"status":404}}'
+- name: Unknown route
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/nosuchroute
+  response:
+    status: 404
+    body_code: rest_no_route
+- name: Privileged context requested anonymously
+  request:
+    method: GET
+    url: https://www.exentis-group.com/wp-json/wp/v2/posts?context=edit
+  response:
+    status: 401
+    body_code: rest_forbidden_context
+- name: MCP tools/list
+  request:
+    method: POST
+    url: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+    headers:
+      Content-Type: application/json
+      Accept: application/json, text/event-stream
+    body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  response:
+    status: 401
+    body: '{"code":"rest_forbidden","message":"...","data":{"status":401}}'
+  why: >-
+    The MCP server is really mounted, and really closed. No WWW-Authenticate header is returned, so
+    an MCP client gets no hint about how to authenticate.

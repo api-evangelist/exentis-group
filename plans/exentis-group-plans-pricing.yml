@@ -1,0 +1,31 @@
+generated: '2026-08-12'
+method: searched
+source: https://www.exentis-group.com/en/ (full Yoast sitemap walk, 46 English pages)
+plan_count: 0
+plans: []
+note: >-
+  Exentis Group publishes no pricing of any kind — not for the API surface documented here, and not
+  for its actual product. There is no /pricing page in the sitemap, no plans, no quotas and no rate
+  card. Its commercial motion is capital-equipment sales: 3D screen-printing production systems are
+  quoted through direct contact (info@exentis-group.com, +41 56 484 55 31) and reported in aggregate
+  to investors rather than listed — the Q4 2024 disclosure of roughly USD 22 million for nine systems
+  is the only public price signal, and it is an order total, not a list price.
+  The WordPress REST API this profile documents is free and unmetered to anonymous readers because it
+  is the company's own marketing site, not a commercial product. There is nothing to buy, so
+  plan_count is a true zero rather than a gap.
+access_model:
+  api_access: anonymous read, no registration, no key
+  commercial_relationship_required: false
+  note: >-
+    Write access requires a WordPress application password issued only to site staff; there is no
+    self-service signup and no developer account of any kind.
+pages_checked:
+- url: https://www.exentis-group.com/en/
+  status: 200
+  result: no pricing link in navigation or footer
+- url: https://www.exentis-group.com/en/contact/
+  status: 200
+  result: contact form and phone; quote-on-request
+- url: https://www.exentis-group.com/sitemap_index.xml
+  status: 200
+  result: no /pricing, /plans or /developers path exists

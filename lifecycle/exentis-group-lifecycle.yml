@@ -1,0 +1,67 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  https://www.exentis-group.com/wp-json/ + a full walk of the Yoast sitemap index for policy pages
+versioning:
+  scheme: namespace-in-path
+  current: wp/v2
+  docs: null
+  note: >-
+    Versioning is inherited from WordPress core, not chosen or published by Exentis Group. The core
+    content namespace is wp/v2. Sixteen further namespaces are mounted by plugins and version
+    independently of it, several at v1 with no published policy at all.
+  namespaces_served:
+  - wp/v2
+  - wp-site-health/v1
+  - wp-block-editor/v1
+  - wp-abilities/v1
+  - mcp
+  - oembed/1.0
+  - pll/v1
+  - yoast/v1
+  - redirection/v1
+  - wp-rocket/v1
+  - leadin/v1
+  - crop_thumbnails/v1
+  - cptui/v1
+  - duplicate-post/v1
+  - regenerate-thumbnails/v1
+  - digit-one/v1
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation policy is published and no Sunset or Deprecation response header was observed. No
+    Deprecation pointer is wired in apis.yml. The practical exposure is that the two site-specific
+    surfaces — the `blog` custom post type (blogposts / blogkategorie) and the theme namespace
+    digit-one/v1 — exist only because a plugin and a theme register them, and can disappear on any
+    site rebuild with no notice to a consumer.
+sla:
+  url: null
+  uptime_target: null
+  note: No SLA. The API is a side effect of the marketing site.
+status_page: null
+status_page_note: >-
+  No status page exists — no status.exentis-group.com, no third-party status host, and no incident or
+  uptime page in the sitemap. No StatusPage pointer is wired in apis.yml.
+changelog:
+  url: null
+  note: >-
+    No API changelog. The company publishes dated press releases and blog entries
+    (https://www.exentis-group.com/en/media/press-releases/), but those describe the business, not
+    the interface, so no ChangeLog artifact or pointer is emitted.
+deprecated_operations: []
+stability:
+  anonymous_read_surface: stable-by-inheritance
+  note: >-
+    wp/v2 has been stable across WordPress releases since 2016 and is the dependable part of this
+    surface. Everything else here is site configuration.
+observed:
+- url: https://www.exentis-group.com/wp-json/wp/v2/posts?per_page=2
+  status: 200
+  sunset_header: absent
+  deprecation_header: absent
+- url: https://www.exentis-group.com/sitemap_index.xml
+  status: 200
+  result: two sitemaps (page, blog); no status, changelog, deprecation or SLA page

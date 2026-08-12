@@ -1,0 +1,76 @@
+generated: '2026-08-12'
+method: generated
+source: openapi/ + conventions/ + errors/ + data-model/
+note: >-
+  Agent Skills authored by API Evangelist against the derived OpenAPI documents in openapi/. Every
+  operationId referenced below exists in a spec in this repository, and every spec was derived from
+  the live https://www.exentis-group.com/wp-json/ discovery document. Exentis Group publishes no
+  skills, no AGENTS.md and no developer documentation of any kind — nothing here is provider-authored.
+skills:
+- name: exentis-group-track-press-releases
+  file: exentis-group-track-press-releases.md
+  api: exentis-group:exentis-group-posts-api
+  operations:
+  - listPosts
+  - getPost
+  - listCategories
+  summary: >-
+    Watch the company's announcements over time — latest items by language, correct header-based
+    pagination through the 371-item archive, and change detection via modified_after.
+- name: exentis-group-research-technology-pages
+  file: exentis-group-research-technology-pages.md
+  api: exentis-group:exentis-group-search-api
+  operations:
+  - searchSite
+  - getPage
+  - listPages
+  - getBlogPost
+  - listLanguages
+  summary: >-
+    Answer technology, materials, applications, certifications and sustainability questions by
+    resolving a query to real ids through search, then fetching structured page and blog bodies.
+    Carries the subtype-to-collection routing rule that is the easiest thing to get wrong here.
+- name: exentis-group-harvest-media-assets
+  file: exentis-group-harvest-media-assets.md
+  api: exentis-group:exentis-group-media-api
+  operations:
+  - listMedia
+  - getMediaItem
+  - getPage
+  summary: >-
+    Locate brand, product and trade-fair imagery in the 1,155-item media library, filter by MIME type,
+    and select the right generated rendition instead of pulling originals.
+exclusions:
+- surface: /wp/v2/users
+  entity: Author
+  reason: personal-data
+  detail: >-
+    DELIBERATE OMISSION, not an oversight. The users collection returns four real person records
+    anonymously — name, slug, description, avatar URLs and ACF fields — and Post, Page and MediaItem
+    all carry an `author` id that resolves into it. No skill wraps this endpoint, no MCP tool is
+    proposed for it, and no individual is named anywhere in this repository. It is documented
+    structurally in data-model/exentis-group-data-model.yml so the exposure is on record without
+    shipping a working harvester. Every skill above also forbids `_embed`, which would inline the
+    same records as a side effect of an otherwise innocent call.
+- surface: /wp-json/mcp/mcp-adapter-default-server
+  reason: auth-gated
+  detail: >-
+    The MCP server returns 401 to anonymous tools/list and initialize, so no skill can name a tool it
+    exposes. See mcp/exentis-group-mcp.yml.
+- surface: write operations
+  reason: no-public-credentials
+  detail: >-
+    POST/PUT/DELETE on any route requires a WordPress application password issued only to Exentis
+    Group site staff. All skills are read-only by construction.
+operating_constraints:
+  robots_txt: >-
+    https://www.exentis-group.com/robots.txt bans roughly 35 named AI and agent crawlers by
+    user-agent (Claude-User, CCBot, OAI-SearchBot, meta-externalagent, Bytespider, MistralAI-User,
+    Diffbot, cohere-ai, AI2Bot and others) and applies `Disallow: /*?` to everyone else. Every
+    filtered REST call carries a query string. Any scheduled use of these skills needs an explicit
+    exemption or the site owner's agreement.
+  rate_limits: >-
+    None published and no rate-limit headers returned, so there is no backoff signal. Skills instruct
+    self-throttling.
+  licensing: >-
+    Public readability is not a content licence. See https://www.exentis-group.com/en/terms-of-use/.

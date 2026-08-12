@@ -1,0 +1,88 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Live error responses provoked against https://www.exentis-group.com/wp-json/wp/v2/* plus the
+  4xx/5xx responses declared in openapi/.
+format: wp-error
+format_note: >-
+  NOT RFC 9457. The WordPress REST API serves errors as application/json with a WP_Error envelope
+  ({code, message, data:{status, params, details}}), not application/problem+json, and there is no
+  `type` URI. An agent parsing this surface must key on `code`, not on a problem type, and must not
+  expect the RFC 9457 content type.
+envelope:
+  content_type: application/json
+  fields:
+  - name: code
+    type: string
+    description: Machine-readable, stable error identifier. This is the only field safe to branch on.
+  - name: message
+    type: string
+    description: >-
+      Human-readable message. LOCALIZED TO THE SITE LOCALE — this host returns German (de_CH) strings
+      even when the request targets English content. Never match on this field.
+  - name: data.status
+    type: integer
+    description: The HTTP status, repeated in the body.
+  - name: data.params
+    type: object
+    description: Present on rest_invalid_param — maps the offending parameter name to a message.
+  - name: data.details
+    type: object
+    description: >-
+      Present on rest_invalid_param — per-parameter sub-error with its own code
+      (rest_out_of_bounds, rest_not_in_enum, rest_invalid_type).
+problems:
+- code: rest_invalid_param
+  status: 400
+  title: A query parameter failed validation
+  observed: https://www.exentis-group.com/wp-json/wp/v2/posts?per_page=200
+  detail: >-
+    Returned when any declared argument is out of bounds, not in its enum, or of the wrong type. The
+    offending parameter is named in data.params and data.details.
+  sub_codes:
+  - rest_out_of_bounds
+  - rest_not_in_enum
+  - rest_invalid_type
+  remediation: >-
+    Read the parameter's constraints from the /wp-json/ discovery document (or the derived OpenAPI in
+    openapi/) before retrying. per_page must be 1..100; orderby must be one of author, date, id,
+    include, modified, parent, relevance, slug, include_slugs, title.
+  source_operation: openapi/exentis-group-posts-api-openapi.yml#listPosts
+- code: rest_forbidden
+  status: 401
+  title: Authentication required for this route
+  observed: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+  detail: >-
+    Returned by the gated namespaces — the MCP server endpoint, the WordPress Abilities registry, and
+    the menu-items route. No WWW-Authenticate challenge is sent, so a client cannot discover the auth
+    scheme from the response.
+  remediation: >-
+    Requires a WordPress application password issued by the site. Not obtainable by a third party;
+    treat these routes as closed.
+- code: rest_forbidden_context
+  status: 401
+  title: The requested context requires authentication
+  observed: https://www.exentis-group.com/wp-json/wp/v2/posts?context=edit
+  detail: Returned when context=edit is requested anonymously.
+  remediation: Use context=view (the default) or context=embed for anonymous reads.
+- code: rest_post_invalid_id
+  status: 404
+  title: No object with that id
+  observed: https://www.exentis-group.com/wp-json/wp/v2/posts/99999999
+  detail: >-
+    Returned for a syntactically valid but non-existent numeric id. Also covers objects that exist but
+    are not publicly viewable, so a 404 here does not prove absence.
+  remediation: Resolve ids through a collection listing or the search endpoint rather than guessing.
+  source_operation: openapi/exentis-group-posts-api-openapi.yml#getPost
+- code: rest_no_route
+  status: 404
+  title: No route matches the URL and method
+  observed: https://www.exentis-group.com/wp-json/wp/v2/nosuchroute
+  detail: Returned for an unregistered path or an unsupported method on a registered path.
+  remediation: >-
+    Enumerate real routes from https://www.exentis-group.com/wp-json/ — 280 routes across 17
+    namespaces are declared there.
+false_positive_warning: >-
+  A 404 on a non-/wp-json/ path (for example /openapi.json or /.well-known/agent-card.json) returns
+  the site's ~93 KB HTML 404 page with content-type text/html, NOT a JSON error. Any probe that checks
+  only for a non-empty body will read those as hits. Check the status code and the content type.

@@ -1,0 +1,24 @@
+generated: '2026-08-12'
+method: derived
+source: openapi/exentis-group-blog-api-openapi.yml, openapi/exentis-group-blog-categories-api-openapi.yml,
+  openapi/exentis-group-categories-api-openapi.yml, openapi/exentis-group-media-api-openapi.yml,
+  openapi/exentis-group-pages-api-openapi.yml, openapi/exentis-group-posts-api-openapi.yml,
+  openapi/exentis-group-search-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: applicationPassword
+  type: http
+  scheme: basic
+  description: 'WordPress application passwords (HTTP Basic: username + application password).
+    Authorization endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php.
+    Not required for the read operations documented here.'
+  sources:
+  - openapi/exentis-group-blog-api-openapi.yml
+  - openapi/exentis-group-blog-categories-api-openapi.yml
+  - openapi/exentis-group-categories-api-openapi.yml
+  - openapi/exentis-group-media-api-openapi.yml
+  - openapi/exentis-group-pages-api-openapi.yml
+  - openapi/exentis-group-posts-api-openapi.yml
+  - openapi/exentis-group-search-api-openapi.yml

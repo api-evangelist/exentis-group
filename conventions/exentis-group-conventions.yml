@@ -1,0 +1,123 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  https://www.exentis-group.com/wp-json/ (live discovery document) + observed responses on
+  /wp-json/wp/v2/*
+summary: >-
+  Cross-cutting runtime semantics for the WordPress REST API that Exentis Group's public host serves.
+  Exentis Group publishes no API documentation, so nothing here is a stated convention — every entry
+  is derived from the declared route arguments and from live responses.
+authentication:
+  anonymous_read: true
+  style: HTTP Basic (WordPress application passwords) for writes
+  header: 'Authorization: Basic <base64(user:application-password)>'
+  authorization_endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php
+  nonce_header: X-WP-Nonce (cookie-authenticated browser clients only)
+  detail: authentication/exentis-group-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  detail: >-
+    NO IDEMPOTENCY SUPPORT. The WordPress REST API accepts no idempotency key on any route, offers no
+    request-replay protection, and the Allow header on the read routes reachable here is GET only.
+    Recorded explicitly as a negative so it is not mistaken for "not checked" — no Idempotency pointer
+    is wired in apis.yml.
+pagination:
+  style: page-number
+  parameters:
+  - name: page
+    default: 1
+    description: 1-indexed page of the collection.
+  - name: per_page
+    default: 10
+    minimum: 1
+    maximum: 100
+    description: Items per page. 200 returns 400 rest_invalid_param / rest_out_of_bounds.
+  - name: offset
+    description: Absolute item offset; overrides page when supplied.
+  response_headers:
+  - X-WP-Total
+  - X-WP-TotalPages
+  link_header: RFC 8288 Link with rel="next" and rel="prev"
+  cors_exposed: true
+  note: >-
+    The totals are only in headers, never in the body. A browser client can read them because
+    Access-Control-Expose-Headers names all three.
+filtering:
+  full_text: search
+  search_scoping: search_columns, search_semantics
+  by_slug: slug
+  by_id: include / exclude (arrays)
+  by_date: after, before, modified_after, modified_before (ISO 8601)
+  by_taxonomy: categories / categories_exclude (posts), blogkategorie / blogkategorie_exclude (blog)
+  taxonomy_relation: tax_relation (AND | OR)
+  by_hierarchy: parent / parent_exclude (pages, media, blog)
+  by_media: media_type, mime_type
+  ordering:
+    parameters:
+    - order (asc | desc)
+    - orderby
+    orderby_enum:
+    - author
+    - date
+    - id
+    - include
+    - modified
+    - parent
+    - relevance
+    - slug
+    - include_slugs
+    - title
+localization:
+  mechanism: Polylang
+  parameter: lang
+  languages:
+  - de (de_CH, default)
+  - en (en_US)
+  discovery: https://www.exentis-group.com/wp-json/pll/v1/languages
+  note: >-
+    Every content collection accepts `lang`. Omitting it returns the German default. Error MESSAGES
+    are German regardless of `lang` — only the `code` field is language-neutral.
+field_selection:
+  parameter: _fields
+  description: >-
+    Comma-separated field whitelist supported by WordPress core on every REST response. Materially
+    reduces payload — a post object carries a large yoast_head string that is rarely wanted.
+  embedding:
+    parameter: _embed
+    description: Inlines linked resources (author, featured media, terms) under _embedded.
+    pii_caution: >-
+      _embed on posts pulls the author object, which is person data. See the exclusion note in
+      skills/_index.yml.
+  envelope:
+    parameter: _envelope
+    description: Wraps body, status and headers into the JSON body for clients that cannot read headers.
+request_id_tracing:
+  supported: false
+  note: No correlation or request-id header is returned. There is nothing for a client to log or quote in a support request.
+versioning:
+  scheme: namespace-in-path
+  current: wp/v2
+  namespaces_served: 17
+  detail: lifecycle/exentis-group-lifecycle.yml
+error_envelope:
+  format: wp-error
+  rfc9457: false
+  detail: errors/exentis-group-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  supported: false
+  detail: rate-limits/exentis-group-rate-limits.yml
+caching:
+  cache_control: public
+  expires: equal to the response Date (no positive TTL)
+  etag: false
+  last_modified: false
+  conditional_requests: false
+  note: >-
+    Marked publicly cacheable but with an immediately-expiring Expires and no validators, so a
+    conditional-request strategy is unavailable — every poll is a full transfer.
+cors:
+  allow_headers: Authorization, X-WP-Nonce, Content-Disposition, Content-MD5, Content-Type
+  expose_headers: X-WP-Total, X-WP-TotalPages, Link
+  vary: Origin, Accept-Encoding

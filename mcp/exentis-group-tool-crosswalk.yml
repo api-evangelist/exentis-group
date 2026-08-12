@@ -1,0 +1,69 @@
+generated: '2026-08-12'
+method: derived
+source: mcp/exentis-group-mcp.yml + openapi/
+note: >-
+  Exentis Group has both an MCP endpoint and (derived) OpenAPI documents, so the crosswalk is emitted.
+  It is deliberately EMPTY on the MCP side: tools/list returns 401, so no tool name exists to bind.
+  Every row would be an invention. What this file records instead is the honest divergence — a real
+  REST surface that any agent can read anonymously, and a real MCP surface that no agent can read at
+  all — plus the REST operations that WOULD be the natural binding targets if the provider ever opened
+  the endpoint.
+surfaces:
+  openapi:
+    files:
+    - openapi/exentis-group-posts-api-openapi.yml
+    - openapi/exentis-group-blog-api-openapi.yml
+    - openapi/exentis-group-pages-api-openapi.yml
+    - openapi/exentis-group-media-api-openapi.yml
+    - openapi/exentis-group-categories-api-openapi.yml
+    - openapi/exentis-group-blog-categories-api-openapi.yml
+    - openapi/exentis-group-search-api-openapi.yml
+    - openapi/exentis-group-languages-api-openapi.yml
+    gated: false
+    note: Read operations answer anonymously with HTTP 200.
+  graphql:
+    endpoint: null
+    gated: null
+    note: No GraphQL surface. /graphql returns the site 404 page.
+  mcp:
+    url: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+    gated: true
+    note: tools/list and initialize both return 401 rest_forbidden. Tool names are unknown.
+crosswalk: []
+mcp_only: []
+rest_only:
+- capability: Content retrieval
+  operations:
+  - listPosts
+  - getPost
+  - listBlogPosts
+  - getBlogPost
+  - listPages
+  - getPage
+  reason: >-
+    No MCP tool can be named for these because the MCP tool list is auth-gated. These are the
+    operations an agent uses today, over plain REST, without credentials.
+- capability: Media
+  operations:
+  - listMedia
+  - getMediaItem
+  reason: MCP tool list auth-gated.
+- capability: Taxonomy
+  operations:
+  - listCategories
+  - getCategory
+  - listBlogCategories
+  - getBlogCategory
+  reason: MCP tool list auth-gated.
+- capability: Search and localization
+  operations:
+  - searchSite
+  - listLanguages
+  reason: MCP tool list auth-gated.
+coverage:
+  tools_named: 0
+  tools_bound: 0
+  mcp_only: 0
+  rest_operations_total: 14
+  rest_operations_with_tool: 0
+  binding_blocked_by: mcp-tools-list-401

@@ -1,0 +1,63 @@
+generated: '2026-08-12'
+method: probed
+source: >-
+  Live unauthenticated responses from https://www.exentis-group.com/wp-json/wp/v2/* plus a full walk
+  of the site for any published limits (none exist).
+limit_count: 0
+limits: []
+note: >-
+  Exentis Group documents no rate limits, because it documents no API. The WordPress REST API on
+  www.exentis-group.com returns no rate-limit headers of any kind on an anonymous request — no
+  X-RateLimit-*, no RateLimit-*, no Retry-After — so an agent has NO runtime signal to back off on and
+  must self-throttle. That is the finding, and it is recorded as an honest zero rather than omitted.
+  Server-side protection is presumed (Apache/WP Rocket sit in front of it) but is not advertised and
+  was not triggered during this pass.
+observed_response_headers:
+  probe: GET https://www.exentis-group.com/wp-json/wp/v2/posts?per_page=2
+  status: 200
+  rate_limit_headers_present: false
+  headers_returned:
+  - name: X-WP-Total
+    value_type: integer
+    purpose: Total items matching the query. Pagination signal, not a rate limit.
+  - name: X-WP-TotalPages
+    value_type: integer
+    purpose: Total pages at the current per_page. Pagination signal, not a rate limit.
+  - name: Link
+    value_type: string
+    purpose: RFC 8288 rel="next" / rel="prev" pagination links.
+  - name: Access-Control-Expose-Headers
+    value: X-WP-Total, X-WP-TotalPages, Link
+    purpose: CORS exposure of the pagination headers to browser clients.
+  - name: Cache-Control
+    value: public
+    purpose: Responses are publicly cacheable, with an Expires equal to the response date.
+  - name: X-Robots-Tag
+    value: noindex
+    purpose: The REST surface is served with noindex.
+  - name: X-Content-Type-Options
+    value: nosniff
+  - name: X-Frame-Options
+    value: SAMEORIGIN
+effective_constraints:
+- constraint: per_page maximum
+  value: 100
+  scope: per request, every collection
+  evidence: >-
+    Declared in the /wp-json/ discovery document as the maximum for the `per_page` argument on every
+    collection route. Exceeding it returns 400 rest_invalid_param.
+  note: >-
+    This is a page-size ceiling, not a rate limit, but it is the only enforced numeric constraint an
+    integrator will hit. Reading all 1,155 media items requires at least 12 requests.
+- constraint: robots.txt query-string disallow
+  value: 'Disallow: /*?'
+  scope: any crawler honoring robots.txt
+  evidence: https://www.exentis-group.com/robots.txt
+  note: >-
+    Every filtered or paginated REST call carries a query string, so a well-behaved agent is
+    effectively limited to unfiltered collection roots. This is a policy constraint, not a served
+    limit, and no 429 was observed.
+exhaustion_behavior:
+  status_code: null
+  retry_after: false
+  note: No 429 was observed and none is documented; exhaustion behavior is unknown.

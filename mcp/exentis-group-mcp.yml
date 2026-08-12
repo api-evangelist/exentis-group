@@ -1,0 +1,67 @@
+generated: '2026-08-12'
+method: probed
+status: published-gated
+source: https://www.exentis-group.com/wp-json/mcp
+server:
+  name: mcp-adapter-default-server
+  transport: http
+  url: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+  methods:
+  - POST
+  - GET
+  - DELETE
+  namespace_index: https://www.exentis-group.com/wp-json/mcp
+discovery:
+  found_via: >-
+    The /wp-json/ REST discovery document on www.exentis-group.com advertises an `mcp` namespace
+    alongside `wp-abilities/v1`. GET /wp-json/mcp returns 200 and enumerates two routes: the namespace
+    index and the server endpoint itself. This is the WordPress MCP Adapter plugin mounting an MCP
+    server over the WordPress Abilities API.
+  origin: WordPress MCP Adapter (mcp namespace) + WordPress Abilities API (wp-abilities/v1)
+  is_first_party_product: false
+  note: >-
+    This is a platform-provided MCP surface on the company's own marketing host, not an Exentis Group
+    product. It is recorded because it is genuinely served from a host the company controls, and
+    because an agent probing exentis-group.com will find it.
+tools: []
+tools_note: >-
+  NO TOOL LIST IS ASSERTED. tools/list and initialize both return HTTP 401 rest_forbidden to
+  anonymous callers, so the live tool set and the per-tool inputSchema cannot be read without a
+  WordPress application password. Deriving a candidate tool list from the WordPress Abilities API
+  would be a guess about what this specific site registered, so none is written. The tool set can only
+  be enumerated by an authenticated introspection the provider would have to run.
+probes:
+- url: https://www.exentis-group.com/wp-json/mcp
+  method: GET
+  status: 200
+  result: namespace index returned; two routes enumerated
+- url: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+  method: POST
+  body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+  status: 401
+  result: '{"code":"rest_forbidden","data":{"status":401}}'
+- url: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+  method: POST
+  body: '{"jsonrpc":"2.0","id":1,"method":"initialize"}'
+  status: 401
+  result: '{"code":"rest_forbidden","data":{"status":401}}'
+- url: https://www.exentis-group.com/wp-json/wp-abilities/v1/abilities
+  method: GET
+  status: 401
+  result: rest_forbidden — the Abilities registry backing the MCP server is also gated
+- url: https://www.exentis-group.com/.well-known/oauth-protected-resource
+  method: GET
+  status: 404
+  result: not served — the endpoint advertises no OAuth protected-resource metadata
+- url: https://www.exentis-group.com/.well-known/oauth-authorization-server
+  method: GET
+  status: 404
+  result: not served
+authentication:
+  model: WordPress application passwords (HTTP Basic)
+  authorization_endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php
+  oauth: false
+  note: >-
+    The MCP endpoint returns a bare 401 rest_forbidden with no WWW-Authenticate challenge and no
+    OAuth protected-resource metadata, so an MCP client cannot discover how to authenticate from the
+    response. Credentials are issued only to WordPress users of the site.

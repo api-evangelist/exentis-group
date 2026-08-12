@@ -1,0 +1,36 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Exentis Group Search API
+  version: 1.0.0
+extends: openapi/exentis-group-search-api-openapi.yml
+x-provenance:
+  generated: '2026-08-12'
+  method: generated
+  source: API Evangelist enrichment pipeline
+  note: Captures the API Evangelist annotations layered over the derived contract. The underlying OpenAPI
+    in openapi/ is itself derived from the live https://www.exentis-group.com/wp-json/ discovery document;
+    this overlay never mutates it.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/exentis-group
+    x-apievangelist-contract-origin: wordpress-rest-discovery
+    x-apievangelist-provider-published-spec: false
+- target: $.info
+  update:
+    x-agent-notes:
+      anonymous_read: true
+      auth_required_for_write: true
+      rate_limit_headers: false
+      idempotency: false
+      error_format: wp-error (not RFC 9457)
+      error_message_locale: de_CH — branch on `code`, never on `message`
+      pagination_totals: X-WP-Total / X-WP-TotalPages response headers only
+      payload_reduction: use _fields to drop yoast_head / yoast_head_json
+      robots_txt: 'Disallow: /*? — filtered calls carry a query string'
+- target: $.paths.*.get
+  update:
+    x-agentic-access:
+      action_class: read
+      consequence: none
+      escalation: none

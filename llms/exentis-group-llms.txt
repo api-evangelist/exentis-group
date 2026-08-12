@@ -1,0 +1,115 @@
+# Exentis Group
+
+> Exentis Group AG is a Swiss industrial technology company in Stetten (canton Aargau), near Zurich,
+> with sites in Switzerland, Germany and the United States. It develops and sells the Exentis 3D
+> Screen Printing platform — additive manufacturing that builds metal, technical-ceramic and polymer
+> parts layer by layer at room temperature by screen printing followed by sintering, with no lasers,
+> no support structures and no rework, down to roughly 70 µm wall thicknesses and cavities. It is
+> positioned for industrial series production, not prototyping. Exentis is a manufacturing-equipment
+> vendor, not a software company: it publishes no developer portal, no product API, no SDK and no
+> pricing.
+
+## What is actually callable
+
+Exentis Group ships no API product. The only machine-readable surface on its public host is the
+WordPress REST API behind www.exentis-group.com, which serves the press room, blog, corporate pages,
+media library, taxonomies, site search and language configuration as JSON, read-only and without
+credentials. This file, and the artifacts it links, are an independent third-party profile produced
+by API Evangelist from that public surface. Nothing here is published or endorsed by Exentis Group.
+
+- Discovery document (the whole contract): https://www.exentis-group.com/wp-json/
+- Base URL: https://www.exentis-group.com/wp-json
+- Auth: none for reads. Writes need a WordPress application password issued only to site staff.
+- 280 routes across 17 namespaces; wp/v2 is the content core, the rest are plugin and theme surfaces.
+
+## APIs
+
+- [Posts API](https://www.exentis-group.com/wp-json/wp/v2/posts): news, press releases and articles.
+  371 items at probe time (185 en / 186 de).
+- [Blog API](https://www.exentis-group.com/wp-json/wp/v2/blogposts): the `blog` custom post type
+  behind /en/media/blog/. 16 items. Has no author, excerpt or featured_media field — it is NOT
+  shaped like Posts.
+- [Pages API](https://www.exentis-group.com/wp-json/wp/v2/pages): technology, materials,
+  applications, certifications, sustainability, investors, careers, contact. 119 items, hierarchical.
+- [Media API](https://www.exentis-group.com/wp-json/wp/v2/media): 1,155 attachments with rendered
+  source URLs, MIME types and generated size variants.
+- [Categories API](https://www.exentis-group.com/wp-json/wp/v2/categories): 27 terms.
+- [Blog Categories API](https://www.exentis-group.com/wp-json/wp/v2/blogkategorie): 12 terms.
+- [Search API](https://www.exentis-group.com/wp-json/wp/v2/search): full-text across 506 public
+  objects; returns {id, title, url, type, subtype}. Use `subtype` to pick the follow-up collection.
+- [Languages API](https://www.exentis-group.com/wp-json/pll/v1/languages): Polylang config. de_CH is
+  the default, en_US the secondary. Every content collection accepts `lang`.
+
+## Agent surfaces
+
+- MCP server: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server — genuinely
+  mounted (the /wp-json/mcp namespace index returns 200) but `initialize` and `tools/list` both
+  return HTTP 401 rest_forbidden with no WWW-Authenticate challenge. The tool set is unknown and no
+  tool list is asserted anywhere in this profile.
+- A2A agent card: none. /.well-known/agent-card.json and /.well-known/agent.json both 404.
+- /.well-known/: nothing served. security.txt, openid-configuration, oauth-authorization-server,
+  oauth-protected-resource, api-catalog and ai-plugin.json all 404.
+- robots.txt disallows roughly 35 named AI and agent crawlers outright — including Claude-User,
+  CCBot, OAI-SearchBot, meta-externalagent, Bytespider, MistralAI-User, Diffbot, cohere-ai and
+  AI2Bot. For everyone else, `Disallow: /*?` blocks any URL with a query string, which is every
+  filtered or paginated REST call. Read this before crawling.
+
+## How to call it without wasting tokens
+
+- Fetch https://www.exentis-group.com/wp-json/ first. It is the only reference that exists.
+- Always pass `_fields`. Every content object carries `yoast_head` and `yoast_head_json` SEO blobs
+  that dwarf the content you want.
+- Pagination totals are in the `X-WP-Total` and `X-WP-TotalPages` response headers, never in the
+  body. `per_page` is capped at 100; 200 returns 400 `rest_invalid_param` / `rest_out_of_bounds`.
+- Errors are the WordPress WP_Error envelope `{code, message, data:{status, params, details}}`, not
+  RFC 9457. Branch on `code`. `message` is German (de_CH) regardless of the `lang` you requested.
+- No rate-limit headers are returned at all, so there is no backoff signal — self-throttle.
+- No ETag, no Last-Modified, and `Expires` equals the response date, so conditional requests are
+  unavailable and every poll is a full transfer.
+- No idempotency keys, no request-id / correlation header.
+- /wp/v2/users returns four person records anonymously. It is documented structurally in this
+  profile but deliberately excluded from every agent skill and tool. Do not harvest it.
+
+## Specs (independently derived, not provider-published)
+
+- openapi/exentis-group-posts-api-openapi.yml
+- openapi/exentis-group-blog-api-openapi.yml
+- openapi/exentis-group-pages-api-openapi.yml
+- openapi/exentis-group-media-api-openapi.yml
+- openapi/exentis-group-categories-api-openapi.yml
+- openapi/exentis-group-blog-categories-api-openapi.yml
+- openapi/exentis-group-search-api-openapi.yml
+- openapi/exentis-group-languages-api-openapi.yml
+
+## Artifacts
+
+- conventions/exentis-group-conventions.yml — pagination, filtering, localization, caching, CORS
+- errors/exentis-group-problem-types.yml — the real error codes, provoked live
+- data-model/exentis-group-data-model.yml — entities and relationships
+- examples/exentis-group-examples.yml — executed requests with observed statuses
+- rate-limits/exentis-group-rate-limits.yml — the measured absence of any limit signal
+- plans/exentis-group-plans-pricing.yml — zero plans; nothing is for sale
+- lifecycle/exentis-group-lifecycle.yml — no versioning policy, no deprecation policy, no status page
+- conformance/exentis-group-conformance.yml — standards conformance, plus ISO 9001:2015 (corporate)
+- authentication/exentis-group-authentication.yml
+- security/exentis-group-domain-security.yml — TLS 1.3, no HSTS, no DNSSEC, no CAA, SPF + DMARC
+  (p=quarantine)
+- mcp/exentis-group-mcp.yml, mcp/exentis-group-tool-crosswalk.yml
+- well-known/exentis-group-well-known.yml — the recorded 404s
+- packages/exentis-group-packages.yml — zero SDKs in any registry
+- skills/_index.yml
+
+## Company
+
+- Website: https://www.exentis-group.com/en/
+- Technology: https://www.exentis-group.com/en/technology/exentis-technology/
+- Applications: https://www.exentis-group.com/en/applications/applications-examples/
+- Certifications (ISO 9001:2015): https://www.exentis-group.com/en/about-exentis/our-certifications/
+- Press releases: https://www.exentis-group.com/en/media/press-releases/
+- Blog: https://www.exentis-group.com/en/media/blog/
+- Investors: https://www.exentis-group.com/en/investors/recent-information/
+- Careers: https://www.exentis-group.com/en/careers/vacancies/
+- Contact: https://www.exentis-group.com/en/contact/
+- Terms of use: https://www.exentis-group.com/en/terms-of-use/
+- Privacy notice: https://www.exentis-group.com/en/privacy-notice/
+- LinkedIn: https://www.linkedin.com/company/exentis-group-ag/

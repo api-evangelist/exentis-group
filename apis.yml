@@ -1,23 +1,315 @@
 aid: exentis-group
 name: Exentis Group
-description: 'Exentis Group is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Exentis Group AG is a Swiss industrial technology company headquartered at Im Stetterfeld
+  2 in Stetten (canton Aargau), near Zurich, with facilities and subsidiaries in Switzerland, Germany
+  and the United States. It develops and sells the Exentis 3D Screen Printing platform — an additive
+  manufacturing technology that builds parts layer by layer at room temperature through screen printing
+  followed by sintering, with no lasers, no support structures and no rework, reaching wall thicknesses
+  and cavities down to roughly 70 micrometres and producing undercuts and closed cavities. The company
+  positions the platform for industrial series production rather than prototyping: a single production
+  system is marketed as capable of millions of components per year, and in pharmaceuticals the process
+  is used to mass-produce tablets with adjustable, controlled drug-release profiles. Its named market
+  segments are pharma, new energy and ultra-fine industrial structures, in metals, technical ceramics
+  and polymers, alongside cleanroom and bioprinting configurations. Exentis holds ISO 9001:2015
+  certification for its Stetten head office and all German locations, and in Q4 2024 reported roughly
+  USD 22 million in orders for nine production systems shipping to United States customers. It is a
+  manufacturing-equipment vendor, not a software company: it publishes no developer portal, no product
+  API, no SDKs, no pricing and no status page. The only machine-readable API surface on its public host
+  is the WordPress REST API behind www.exentis-group.com, which serves the press room, blog, corporate
+  pages, media library, taxonomies, site search and Polylang language configuration as JSON, read-only
+  without credentials — plus an MCP server endpoint mounted by the WordPress MCP adapter, which is
+  present but returns 401 to anonymous callers.'
 url: https://raw.githubusercontent.com/api-evangelist/exentis-group/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline
+image: https://www.exentis-group.com/app/uploads/2022/11/Logo-exentis.svg
 specificationVersion: '0.20'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
 - Company
-apis: []
+- Additive Manufacturing
+- 3D Printing
+- Industrial Manufacturing
+- Advanced Materials
+- Technical Ceramics
+- Metals
+- Pharmaceutical Manufacturing
+- New Energy
+- Switzerland
+- Hardware
+- Content
+apis:
+- aid: exentis-group:exentis-group-posts-api
+  name: Exentis Group Posts API
+  description: The Posts API from Exentis Group — news, press releases and article records served as
+    JSON by the WordPress REST API on www.exentis-group.com, filterable by date, slug, category and
+    full text, and available in both German and English via the `lang` parameter. 371 posts were
+    readable anonymously at probe time.
+  humanURL: https://www.exentis-group.com/en/media/press-releases/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Posts
+  - News
+  - Press
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-posts-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-posts-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-blog-api
+  name: Exentis Group Blog API
+  description: The Blog API from Exentis Group — the `blog` custom post type behind /en/media/blog/,
+    served as JSON at the `blogposts` REST base and grouped by the `blogkategorie` taxonomy. 16 blog
+    entries were readable anonymously at probe time.
+  humanURL: https://www.exentis-group.com/en/media/blog/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Blog
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-blog-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-blog-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-pages-api
+  name: Exentis Group Pages API
+  description: The Pages API from Exentis Group — corporate website pages covering the 3D screen
+    printing technology platform, materials, applications, certifications, sustainability, investors,
+    careers and contact, in German and English, served as JSON with parent/child hierarchy and menu
+    ordering. 119 pages were readable anonymously at probe time.
+  humanURL: https://www.exentis-group.com/en/technology/exentis-technology/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Pages
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-pages-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-pages-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-media-api
+  name: Exentis Group Media API
+  description: The Media API from Exentis Group — the media library of product photography,
+    trade-fair assets, technical diagrams and documents attached to pages, posts and blog entries,
+    with rendered source URLs, MIME types and generated size variants. 1,155 items were readable
+    anonymously at probe time.
+  humanURL: https://www.exentis-group.com/en/media/photos-videos/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Media
+  - Images
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-media-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-media-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-categories-api
+  name: Exentis Group Categories API
+  description: The Categories API from Exentis Group — the `category` taxonomy that posts are filed
+    under, with parent/child nesting and post counts. 27 categories were readable anonymously at
+    probe time.
+  humanURL: https://www.exentis-group.com/en/media/recent-news/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Categories
+  - Taxonomy
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-categories-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-categories-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-blog-categories-api
+  name: Exentis Group Blog Categories API
+  description: The Blog Categories API from Exentis Group — the `blogkategorie` taxonomy that groups
+    blog entries into topic areas. 12 terms were readable anonymously at probe time.
+  humanURL: https://www.exentis-group.com/en/media/blog/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Taxonomy
+  - Blog
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-blog-categories-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-blog-categories-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-search-api
+  name: Exentis Group Search API
+  description: The Search API from Exentis Group — full-text search across every publicly readable
+    object on www.exentis-group.com, returning id, title, url, type and subtype, filterable by object
+    type and subtype. 506 searchable objects at probe time.
+  humanURL: https://www.exentis-group.com/en/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Search
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-search-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-search-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+  - type: Examples
+    url: examples/exentis-group-examples.yml
+- aid: exentis-group:exentis-group-languages-api
+  name: Exentis Group Languages API
+  description: The Languages API from Exentis Group — the Polylang language configuration for the
+    site, returning locale, slug, default flag, home and search URLs and per-language content counts
+    for German (de_CH, default) and English (en_US). It is the endpoint that tells a client which
+    `lang` values every other collection on this host will accept.
+  humanURL: https://www.exentis-group.com/en/
+  baseURL: https://www.exentis-group.com/wp-json
+  tags:
+  - Languages
+  - Localization
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/exentis-group-languages-api-openapi.yml
+  - type: Overlay
+    url: overlays/exentis-group-languages-api-overlay.yaml
+  - type: DataModel
+    url: data-model/exentis-group-data-model.yml
+  - type: ErrorCatalog
+    url: errors/exentis-group-problem-types.yml
+- aid: exentis-group:exentis-group-mcp-server
+  name: Exentis Group MCP Server
+  description: An MCP (Model Context Protocol) server endpoint mounted on www.exentis-group.com by the
+    WordPress MCP adapter, alongside the WordPress Abilities API. The endpoint is really served — GET
+    /wp-json/mcp enumerates it — but `tools/list` returns HTTP 401 rest_forbidden to anonymous
+    callers, so the live tool set and its input schemas cannot be read without a WordPress application
+    password. Recorded as present and auth-gated; no tool list is asserted.
+  humanURL: https://www.exentis-group.com/wp-json/mcp
+  baseURL: https://www.exentis-group.com/wp-json/mcp/mcp-adapter-default-server
+  tags:
+  - MCP
+  - Agents
+  properties:
+  - type: MCPServer
+    url: mcp/exentis-group-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/exentis-group-tool-crosswalk.yml
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 36
+  pass: local-v1
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: AgenticAccess
+  url: agentic-access/exentis-group-agentic-access.yml
 - type: Website
+  url: https://www.exentis-group.com/en/
+- type: About
+  url: https://www.exentis-group.com/en/about-exentis/who-we-are/
+- type: Technology
+  url: https://www.exentis-group.com/en/technology/exentis-technology/
+- type: Applications
+  url: https://www.exentis-group.com/en/applications/applications-examples/
+- type: Blog
+  url: https://www.exentis-group.com/en/media/blog/
+- type: BlogRSS
+  url: https://www.exentis-group.com/en/feed/
+- type: News
+  url: https://www.exentis-group.com/en/media/recent-news/
+- type: Press
+  url: https://www.exentis-group.com/en/media/press-releases/
+- type: Investors
+  url: https://www.exentis-group.com/en/investors/recent-information/
+- type: Careers
+  url: https://www.exentis-group.com/en/careers/vacancies/
+- type: Support
+  url: https://www.exentis-group.com/en/contact/
+- type: Compliance
+  url: https://www.exentis-group.com/en/about-exentis/our-certifications/
+- type: Sustainability
+  url: https://www.exentis-group.com/en/sustainability/sustainability-at-exentis/
+- type: TermsOfService
+  url: https://www.exentis-group.com/en/terms-of-use/
+- type: PrivacyPolicy
+  url: https://www.exentis-group.com/en/privacy-notice/
+- type: Imprint
+  url: https://www.exentis-group.com/en/imprint/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/exentis-group-ag/
+- type: YouTube
+  url: https://youtube.com/@exentisgroupag1372
+- type: SecondaryMarket
   url: https://forgeglobal.com/exentis-group_stock/
+- type: Authentication
+  url: authentication/exentis-group-authentication.yml
+- type: Conventions
+  url: conventions/exentis-group-conventions.yml
+- type: Conformance
+  url: conformance/exentis-group-conformance.yml
+- type: Lifecycle
+  url: lifecycle/exentis-group-lifecycle.yml
+- type: DomainSecurity
+  url: security/exentis-group-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/exentis-group-llms.txt
+- type: Packages
+  url: packages/exentis-group-packages.yml
+- type: Plans
+  url: plans/exentis-group-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/exentis-group-rate-limits.yml
+- type: DataModel
+  url: data-model/exentis-group-data-model.yml
+- type: ErrorCatalog
+  url: errors/exentis-group-problem-types.yml
+- type: Examples
+  url: examples/exentis-group-examples.yml
+- type: Overlay
+  url: overlays/exentis-group-posts-api-overlay.yaml

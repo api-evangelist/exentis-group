@@ -42,5 +42,17 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Exentis Group is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
+Exentis Group AG is a Swiss industrial technology company in Stetten (canton Aargau), near Zurich, with sites
+in Switzerland, Germany and the United States. It develops and sells the Exentis 3D Screen Printing platform —
+additive manufacturing that builds metal, technical-ceramic and polymer parts layer by layer at room temperature
+by screen printing followed by sintering, positioned for industrial series production rather than prototyping.
+
+It is a manufacturing-equipment vendor, not a software company: there is no developer portal, no product API,
+no SDK and no pricing. The API surface profiled here is the WordPress REST API that its own public host serves
+(press room, blog, corporate pages, media library, taxonomies, search and language configuration, read-only
+without credentials), plus a WordPress MCP adapter endpoint that is genuinely mounted but returns HTTP 401 to
+anonymous callers. Nothing in this repository is published or endorsed by Exentis Group.
+
+- https://www.exentis-group.com/en/
+- https://www.exentis-group.com/wp-json/
 - https://forgeglobal.com/exentis-group_stock/

@@ -1,0 +1,92 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/ + https://www.exentis-group.com/wp-json/ + observed responses, plus
+  https://www.exentis-group.com/en/about-exentis/our-certifications/ for the corporate program
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    Eight OpenAPI 3.1.0 documents in openapi/, derived by API Evangelist from the live discovery
+    document. NOTE: the provider itself publishes no OpenAPI — this asserts the artifact, not a
+    provider claim.
+  published_by_provider: false
+- id: rest
+  conforms: true
+  evidence: Resource-oriented JSON over HTTPS with GET semantics and standard status codes.
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: >-
+    Collection responses carry a Link header with rel="next"/"prev"; every object body carries a
+    _links object with self, collection, about, author, replies, wp:attachment and curies.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the WordPress WP_Error envelope with content-type application/json, not
+    application/problem+json, and carry no `type` URI. See errors/exentis-group-problem-types.yml.
+- id: json-schema
+  conforms: partial
+  evidence: >-
+    The /wp-json/ discovery document declares each argument with type, default, enum, minimum and
+    maximum in JSON-Schema-shaped form, which is what the derived OpenAPI parameters were built from.
+    No standalone JSON Schema document is published.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme anywhere; /.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource both return 404. Auth is HTTP Basic application passwords.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404.
+- id: rfc8615-well-known
+  conforms: false
+  evidence: >-
+    No /.well-known/ path returns a document; every probe returned the site's HTML 404 page. See
+    well-known/exentis-group-well-known.yml.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation headers observed; no deprecation policy published.
+- id: mcp
+  conforms: unverifiable
+  evidence: >-
+    An MCP server endpoint is genuinely mounted at /wp-json/mcp/mcp-adapter-default-server (the
+    namespace index returns 200), but initialize and tools/list both return 401, so protocol
+    conformance cannot be verified anonymously. See mcp/exentis-group-mcp.yml.
+- id: a2a
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json both 404 on www.exentis-group.com. No
+    agent card artifact was written.
+- id: asyncapi
+  conforms: not-applicable
+  evidence: >-
+    No event, streaming or webhook surface exists on this host — no webhook namespace is registered in
+    the discovery document. Not penalized; there is nothing to describe.
+- id: iso-9001-2015
+  conforms: true
+  scope: corporate quality management, not the API
+  evidence: >-
+    "Exentis has ISO 9001:2015 certification at its head office in Stetten, Switzerland and at all
+    business locations in Germany." — https://www.exentis-group.com/en/about-exentis/our-certifications/
+  published_by_provider: true
+- id: gdpr
+  conforms: claimed
+  scope: corporate
+  evidence: >-
+    A privacy notice and cookie notice are published
+    (https://www.exentis-group.com/en/privacy-notice/); the company is Swiss/EU-operating. No
+    API-specific data-processing terms exist.
+security_certifications:
+  soc2: false
+  iso_27001: false
+  pci_dss: false
+  hipaa: false
+  fedramp: false
+  note: >-
+    ISO 9001:2015 is a quality-management certification, not an information-security one. No
+    security or privacy certification, trust center or bug bounty was found — see
+    security/exentis-group-domain-security.yml. The Compliance pointer in apis.yml points at the
+    provider's own certifications page and asserts only what that page states.
