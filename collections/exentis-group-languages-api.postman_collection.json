@@ -1,0 +1,106 @@
+{
+  "item": [
+    {
+      "id": "6a3f071a-1657-4747-9776-47194a29f73a",
+      "name": "Languages",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fe253838-a49a-498b-a976-ff40b0c5a90f",
+          "name": "List configured site languages",
+          "request": {
+            "name": "List configured site languages",
+            "description": {
+              "content": "Returns every language configured in Polylang, with locale, slug, default flag, home URL, search URL and per-language content counts. No authentication required.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pll",
+                "v1",
+                "languages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "370f2a60-e8b3-4d73-8e33-dd96340c71a3",
+              "name": "The configured languages.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pll",
+                    "v1",
+                    "languages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"term_group\": 727,\n    \"term_id\": 1119,\n    \"locale\": \"string\",\n    \"is_rtl\": false,\n    \"w3c\": \"string\",\n    \"facebook\": \"string\",\n    \"home_url\": \"string\",\n    \"search_url\": \"string\",\n    \"host\": \"string\",\n    \"page_on_front\": 1310,\n    \"page_for_posts\": 6241,\n    \"flag_code\": \"string\",\n    \"flag_url\": \"string\",\n    \"flag\": \"string\",\n    \"custom_flag_url\": \"string\",\n    \"custom_flag\": \"string\",\n    \"active\": false,\n    \"is_default\": true,\n    \"term_props\": {\n      \"language\": {\n        \"term_id\": 1629,\n        \"term_taxonomy_id\": 299,\n        \"count\": 6329\n      },\n      \"term_language\": {\n        \"term_id\": 6624,\n        \"term_taxonomy_id\": 9752,\n        \"count\": 2899\n      }\n    }\n  },\n  {\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"term_group\": 3914,\n    \"term_id\": 716,\n    \"locale\": \"string\",\n    \"is_rtl\": true,\n    \"w3c\": \"string\",\n    \"facebook\": \"string\",\n    \"home_url\": \"string\",\n    \"search_url\": \"string\",\n    \"host\": \"string\",\n    \"page_on_front\": 221,\n    \"page_for_posts\": 1628,\n    \"flag_code\": \"string\",\n    \"flag_url\": \"string\",\n    \"flag\": \"string\",\n    \"custom_flag_url\": \"string\",\n    \"custom_flag\": \"string\",\n    \"active\": true,\n    \"is_default\": false,\n    \"term_props\": {\n      \"language\": {\n        \"term_id\": 2111,\n        \"term_taxonomy_id\": 8454,\n        \"count\": 4323\n      },\n      \"term_language\": {\n        \"term_id\": 9008,\n        \"term_taxonomy_id\": 8093,\n        \"count\": 6220\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.exentis-group.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e7d18373-3e28-4f09-a174-46f1a77d05d5",
+    "name": "Exentis Group Languages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Polylang language configuration for www.exentis-group.com — the site is published in German (de_CH, default) and English (en_US), and this endpoint is what tells a client which locales exist, which is default, their home and search URLs and their content counts. Every other collection on this host accepts the resulting `lang` slug as a filter.\n\nDerived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/ and an anonymous sample response.\n\nContact Support:\n Name: Exentis Group AG\n Email: info@exentis-group.com",
+      "type": "text/plain"
+    }
+  }
+}

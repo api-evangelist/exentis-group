@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Exentis Group Languages API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Languages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List configured site languages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.exentis-group.com/wp-json/pll/v1/languages"
+          },
+          "docs": "Returns every language configured in Polylang, with locale, slug, default flag, home URL, search URL and per-language content counts. No authentication required."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
