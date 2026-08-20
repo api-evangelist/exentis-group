@@ -119,6 +119,10 @@ apis:
   baseURL: https://www.exentis-group.com/wp-json
   tags:
   - Media
+  - Image
+  - Content
+  tags_raw:
+  - Media
   - Images
   - Content
   properties:
@@ -205,6 +209,10 @@ apis:
   humanURL: https://www.exentis-group.com/en/
   baseURL: https://www.exentis-group.com/wp-json
   tags:
+  - Language
+  - Localization
+  - Content
+  tags_raw:
   - Languages
   - Localization
   - Content
