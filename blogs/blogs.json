@@ -2,6 +2,20 @@
   "repo": "exentis-group",
   "feeds": [
     {
+      "source": "https://www.exentis-group.com/en/applications/applications-examples/feed/",
+      "feed_url": "https://www.exentis-group.com/en/applications/applications-examples/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
+      "source": "https://www.exentis-group.com/en/media/blog/feed/",
+      "feed_url": "https://www.exentis-group.com/en/media/blog/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://www.exentis-group.com/en/applications/applications-examples/",
       "feed_url": "https://www.exentis-group.com/en/applications/applications-examples/feed/",
       "title": "",
@@ -17,5 +31,5 @@
     }
   ],
   "post_count": 0,
-  "fetched": "2026-08-15T12:22:01Z"
+  "fetched": "2026-08-22T20:20:02Z"
 }
