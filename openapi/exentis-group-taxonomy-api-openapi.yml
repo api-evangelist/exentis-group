@@ -1,0 +1,361 @@
+openapi: 3.2.0
+info:
+  title: Exentis Group Blog Categories Taxonomy API
+  version: 2.0.0
+  description: 'The `blogkategorie` taxonomy that groups blog entries. 12 terms were readable anonymously at probe time.
+
+
+    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/ and anonymous sample responses. Exentis Group publishes no developer portal; this documents the machine-readable surface its own public host serves. Read-only without credentials; writes require a WordPress application password.'
+  contact:
+    name: Exentis Group AG
+    email: info@exentis-group.com
+    url: https://www.exentis-group.com/en/contact/
+  termsOfService: https://www.exentis-group.com/en/terms-of-use/
+  x-provenance:
+    method: derived
+    source: https://www.exentis-group.com/wp-json/
+    derived: '2026-08-12'
+    by: API Evangelist enrichment pipeline
+servers:
+- url: https://www.exentis-group.com/wp-json
+  description: WordPress REST API root on the Exentis Group production host.
+tags:
+- name: Taxonomy
+paths:
+  /wp/v2/blogkategorie:
+    get:
+      operationId: listBlogCategories
+      summary: List taxonomy
+      description: Retrieve a paginated collection of taxonomy from www.exentis-group.com. No authentication required. Pagination totals are returned in the X-WP-Total and X-WP-TotalPages response headers.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Ensure result set excludes specific IDs.
+      - name: hide_empty
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Whether to hide terms not assigned to any posts.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+          default: []
+        description: Limit result set to specific IDs.
+      - name: lang
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ''
+          - de
+          - en
+          default: ''
+        description: Limit results to a specific language. By default, results are not filtered by language.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - slug
+          - include_slugs
+          - term_group
+          - description
+          - count
+          default: name
+        description: Sort collection by term attribute.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+        description: Current page of the collection.
+      - name: parent
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific parent.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 100
+        description: Maximum number of items to be returned in result set.
+      - name: post
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Limit result set to terms assigned to a specific post.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to terms with one or more specific slugs.
+      responses:
+        '200':
+          description: A page of taxonomy.
+          headers:
+            X-WP-Total:
+              description: Total number of items in the collection matching the query.
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages available at the current per_page.
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel="next" / rel="prev").
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Taxonomy'
+        '400':
+          $ref: '#/components/responses/Error400'
+  /wp/v2/blogkategorie/{id}:
+    get:
+      operationId: getBlogCategory
+      summary: Retrieve a single taxonomy by id
+      description: Retrieve one object by its numeric WordPress id. No authentication required.
+      tags:
+      - Taxonomy
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Unique numeric identifier for the object.
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in the response. `edit` requires authentication.
+      responses:
+        '200':
+          description: The requested object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Taxonomy'
+        '401':
+          $ref: '#/components/responses/Error401'
+        '404':
+          $ref: '#/components/responses/Error404'
+components:
+  schemas:
+    Taxonomy:
+      type: object
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+        description:
+          type: string
+        link:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+        parent:
+          type: integer
+        meta:
+          type: array
+          items: {}
+        acf:
+          type: array
+          items: {}
+        yoast_head:
+          type: string
+        yoast_head_json:
+          type: object
+          properties:
+            title:
+              type: string
+            robots:
+              type: object
+              properties:
+                index:
+                  type: string
+                follow:
+                  type: string
+            og_locale:
+              type: string
+            og_type:
+              type: string
+            og_title:
+              type: string
+            og_url:
+              type: string
+            og_site_name:
+              type: string
+            twitter_card:
+              type: string
+            schema:
+              type: object
+              properties:
+                '@context':
+                  type: string
+                '@graph':
+                  type: array
+                  items: {}
+        lang:
+          type: string
+        translations:
+          type: object
+          properties:
+            de:
+              type: integer
+            en:
+              type: integer
+        _links:
+          type: object
+          properties:
+            self:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+                  targetHints: {}
+            collection:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            about:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            wp:post_type:
+              type: array
+              items:
+                type: object
+                properties:
+                  href: {}
+            curies:
+              type: array
+              items:
+                type: object
+                properties:
+                  name: {}
+                  href: {}
+                  templated: {}
+      description: Structure derived from a live anonymous response; values are not reproduced here.
+    Error:
+      type: object
+      description: The WordPress REST API error envelope (WP_Error serialized).
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
+        message:
+          type: string
+          description: Human-readable message. Localized to the site locale (de_CH on this host).
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation detail on 400 rest_invalid_param.
+      required:
+      - code
+      - message
+  responses:
+    Error404:
+      description: rest_no_route or rest_post_invalid_id — no such route or object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error401:
+      description: rest_forbidden — the resource or context requires authentication.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    applicationPassword:
+      type: http
+      scheme: basic
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Authorization endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php. Not required for the read operations documented here.'
