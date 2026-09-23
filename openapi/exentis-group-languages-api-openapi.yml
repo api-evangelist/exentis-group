@@ -1,15 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Exentis Group Languages API
   version: 1.0.0
-  description: 'The Polylang language configuration for www.exentis-group.com — the site is published
-    in German (de_CH, default) and English (en_US), and this endpoint is what tells a client which locales
-    exist, which is default, their home and search URLs and their content counts. Every other collection
-    on this host accepts the resulting `lang` slug as a filter.
-
-
-    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/
-    and an anonymous sample response.'
+  description: The Polylang language configuration for www.exentis-group.com — the site is published in German (de_CH, default) and English (en_US), and this endpoint is what tells a client which locales exist, which is default, their home and search URLs and their content counts.
   contact:
     name: Exentis Group AG
     email: info@exentis-group.com
@@ -30,8 +23,7 @@ paths:
     get:
       operationId: listLanguages
       summary: List configured site languages
-      description: Returns every language configured in Polylang, with locale, slug, default flag, home
-        URL, search URL and per-language content counts. No authentication required.
+      description: Returns every language configured in Polylang, with locale, slug, default flag, home URL, search URL and per-language content counts. No authentication required.
       tags:
       - Languages
       parameters: []
@@ -113,27 +105,4 @@ components:
                   type: integer
                 count:
                   type: integer
-      description: Polylang language object. Structure derived from a live anonymous response; values
-        are not reproduced here. Note `flag` carries an inline base64 data-URI image.
-    Error:
-      type: object
-      description: The WordPress REST API error envelope (WP_Error serialized).
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
-        message:
-          type: string
-          description: Human-readable message. Localized to the site locale (de_CH on this host).
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation detail on 400 rest_invalid_param.
-      required:
-      - code
-      - message
+      description: Polylang language object. Structure derived from a live anonymous response; values are not reproduced here. Note `flag` carries an inline base64 data-URI image.

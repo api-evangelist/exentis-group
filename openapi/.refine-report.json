@@ -1,0 +1,42 @@
+{
+  "provider": "exentis-group",
+  "sources": [
+    "_original/exentis-group-blog-categories-api-openapi.yml",
+    "exentis-group-blog-api-openapi.yml",
+    "exentis-group-categories-api-openapi.yml",
+    "exentis-group-languages-api-openapi.yml",
+    "exentis-group-media-api-openapi.yml",
+    "exentis-group-pages-api-openapi.yml",
+    "exentis-group-posts-api-openapi.yml",
+    "exentis-group-search-api-openapi.yml"
+  ],
+  "outputs": [
+    "exentis-group-taxonomy-api-openapi.yml",
+    "exentis-group-blog-api-openapi.yml",
+    "exentis-group-categories-api-openapi.yml",
+    "exentis-group-languages-api-openapi.yml",
+    "exentis-group-media-api-openapi.yml",
+    "exentis-group-pages-api-openapi.yml",
+    "exentis-group-posts-api-openapi.yml",
+    "exentis-group-search-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [
+    "exentis-group-blog-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/blogposts get, /wp/v2/blogposts/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "exentis-group-categories-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/categories get, /wp/v2/categories/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "exentis-group-languages-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. /pll/v1/languages get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "exentis-group-media-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/media get, /wp/v2/media/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "exentis-group-pages-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/pages get, /wp/v2/pages/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "exentis-group-posts-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/posts get, /wp/v2/posts/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "exentis-group-search-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. /wp/v2/search get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "exentis-group-blog-categories-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "exentis-group-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

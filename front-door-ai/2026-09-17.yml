@@ -1,0 +1,21 @@
+# Front Door AI Index — exentis-group — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: exentis-group
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.exentis-group.com
+  final_host: www.exentis-group.com
+  ownership: own
+  owner: exentis-group
+  shares_host_with: null
+  inherited_from: null
+  verdict: thin
+  score: null
+  host_score: null
+  density: null
+  words: 35
+  tiers: null
+  ambiguous: null
+  top_terms: null

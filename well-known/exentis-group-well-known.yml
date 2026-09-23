@@ -1,57 +1,88 @@
-generated: '2026-08-12'
+generated: '2026-09-19'
 method: probed
 source: https://www.exentis-group.com/
 host: https://www.exentis-group.com
-note: >-
-  Every /.well-known/ path probed on the single Exentis Group host returned HTTP 404. This file
-  records that measured absence. No WellKnown or SecurityTxt pointer is wired into apis.yml, because
-  no path returned a document — the pointer would assert a discovery surface the provider does not
-  serve. Note the 404 bodies are the site's WordPress 404 page (text/html, ~93 KB), not an empty
-  response, so a naive "did it return content" check would read as a false positive here.
-documents:
-- path: /.well-known/security.txt
-  status: 404
-  content_type: text/html
-- path: /.well-known/openid-configuration
-  status: 404
-  content_type: text/html
-- path: /.well-known/oauth-authorization-server
-  status: 404
-  content_type: text/html
-- path: /.well-known/oauth-protected-resource
-  status: 404
-  content_type: text/html
-- path: /.well-known/api-catalog
-  status: 404
-  content_type: text/html
-- path: /.well-known/ai-plugin.json
-  status: 404
-  content_type: text/html
-- path: /.well-known/agent-card.json
-  status: 404
-  content_type: text/html
-- path: /.well-known/agent.json
-  status: 404
-  content_type: text/html
+note: 'Every /.well-known/ path probed on the single Exentis Group host returned HTTP 404. This file records
+  that measured absence. No WellKnown or SecurityTxt pointer is wired into apis.yml, because no path returned
+  a document — the pointer would assert a discovery surface the provider does not serve. Note the 404
+  bodies are the site''s WordPress 404 page (text/html, ~93 KB), not an empty response, so a naive "did
+  it return content" check would read as a false positive here.
+
+
+  MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s primary
+  hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed and
+  were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'
 adjacent_discovery:
 - path: /wp-json/
   status: 200
   content_type: application/json
-  note: >-
-    The WordPress REST API root discovery document. This is the only machine-readable discovery
-    surface Exentis Group serves — it enumerates 280 routes across 17 namespaces and is what this
-    profile's OpenAPI documents were derived from.
+  note: The WordPress REST API root discovery document. This is the only machine-readable discovery surface
+    Exentis Group serves — it enumerates 280 routes across 17 namespaces and is what this profile's OpenAPI
+    documents were derived from.
 - path: /robots.txt
   status: 200
   content_type: text/plain
-  note: >-
-    Yoast-generated. Disallows roughly 35 named AI/agent crawlers outright (CCBot, Claude-User,
-    OAI-SearchBot, meta-externalagent, Bytespider, PerplexityBot-adjacent, MistralAI-User, Diffbot,
-    cohere-ai, AI2Bot and others), while User-agent * is allowed except wp-admin/includes/plugins,
-    feeds, categories and any URL carrying a query string (Disallow /*?). The /wp-json/ REST surface
-    is NOT disallowed, but every filtered REST call carries a query string, so an agent honoring
-    robots.txt can read collection roots but not filter them.
+  note: Yoast-generated. Disallows roughly 35 named AI/agent crawlers outright (CCBot, Claude-User, OAI-SearchBot,
+    meta-externalagent, Bytespider, PerplexityBot-adjacent, MistralAI-User, Diffbot, cohere-ai, AI2Bot
+    and others), while User-agent * is allowed except wp-admin/includes/plugins, feeds, categories and
+    any URL carrying a query string (Disallow /*?). The /wp-json/ REST surface is NOT disallowed, but
+    every filtered REST call carries a query string, so an agent honoring robots.txt can read collection
+    roots but not filter them.
 - path: /sitemap_index.xml
   status: 200
   content_type: text/xml
   note: Yoast sitemap index; page-sitemap.xml and blog-sitemap.xml.
+hosts:
+- host: https://www.exentis-group.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    content_type: text/html
+  - path: /.well-known/openid-configuration
+    status: 404
+    content_type: text/html
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    content_type: text/html
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    content_type: text/html
+  - path: /.well-known/api-catalog
+    status: 404
+    content_type: text/html
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    content_type: text/html
+  - path: /.well-known/agent-card.json
+    status: 404
+    content_type: text/html
+  - path: /.well-known/agent.json
+    status: 404
+    content_type: text/html
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: exentis-group-www-oauth-protected-resource.json
+    bytes: 203
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: exentis-group-www-oauth-authorization-server.json
+    bytes: 575
+  path_echo_control: passed
+x-shape-fix:
+  converted: '2026-08-20'
+  from: documents
+  note: Rewritten into hosts[] -> documents[], the only shape well_known_docs() in score.rb reads. A served
+    .well-known surface recorded in any other shape scores as absent.
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://www.exentis-group.com
+    path: /.well-known/oauth-protected-resource
+    file: exentis-group-www-oauth-protected-resource.json
+  - host: https://www.exentis-group.com
+    path: /.well-known/oauth-authorization-server
+    file: exentis-group-www-oauth-authorization-server.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host

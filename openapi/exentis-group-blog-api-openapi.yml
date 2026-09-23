@@ -1,15 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Exentis Group Blog API
   version: 2.0.0
-  description: 'The `blog` custom post type behind /en/media/blog/, served as JSON at the blogposts REST
-    base. 16 blog entries were readable anonymously at probe time.
-
-
-    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/
-    and anonymous sample responses. Exentis Group publishes no developer portal; this documents the machine-readable
-    surface its own public host serves. Read-only without credentials; writes require a WordPress application
-    password.'
+  description: The `blog` custom post type behind /en/media/blog/, served as JSON at the blogposts REST base.
   contact:
     name: Exentis Group AG
     email: info@exentis-group.com
@@ -30,8 +23,7 @@ paths:
     get:
       operationId: listBlogPosts
       summary: List blog
-      description: Retrieve a paginated collection of blog from www.exentis-group.com. No authentication
-        required. Pagination totals are returned in the X-WP-Total and X-WP-TotalPages response headers.
+      description: Retrieve a paginated collection of blog from www.exentis-group.com. No authentication required. Pagination totals are returned in the X-WP-Total and X-WP-TotalPages response headers.
       tags:
       - Blog
       parameters:
@@ -60,8 +52,7 @@ paths:
         required: false
         schema:
           type: object
-        description: Limit result set to items except those with specific terms assigned in the blogkategorie
-          taxonomy.
+        description: Limit result set to items except those with specific terms assigned in the blogkategorie taxonomy.
       - name: context
         in: query
         required: false
@@ -302,8 +293,7 @@ paths:
           - embed
           - edit
           default: view
-        description: Scope under which the request is made; determines fields present in the response.
-          `edit` requires authentication.
+        description: Scope under which the request is made; determines fields present in the response. `edit` requires authentication.
       responses:
         '200':
           description: The requested object.
@@ -316,7 +306,48 @@ paths:
         '404':
           $ref: '#/components/responses/Error404'
 components:
+  responses:
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error401:
+      description: rest_forbidden — the resource or context requires authentication.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Error404:
+      description: rest_no_route or rest_post_invalid_id — no such route or object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      description: The WordPress REST API error envelope (WP_Error serialized).
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
+        message:
+          type: string
+          description: Human-readable message. Localized to the site locale (de_CH on this host).
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation detail on 400 rest_invalid_param.
+      required:
+      - code
+      - message
     Blog:
       type: object
       properties:
@@ -494,51 +525,8 @@ components:
                   href: {}
                   templated: {}
       description: Structure derived from a live anonymous response; values are not reproduced here.
-    Error:
-      type: object
-      description: The WordPress REST API error envelope (WP_Error serialized).
-      properties:
-        code:
-          type: string
-          description: Machine-readable error code, e.g. rest_forbidden, rest_post_invalid_id, rest_invalid_param.
-        message:
-          type: string
-          description: Human-readable message. Localized to the site locale (de_CH on this host).
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation detail on 400 rest_invalid_param.
-      required:
-      - code
-      - message
-  responses:
-    Error400:
-      description: rest_invalid_param — a query parameter failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Error401:
-      description: rest_forbidden — the resource or context requires authentication.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Error404:
-      description: rest_no_route or rest_post_invalid_id — no such route or object.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     applicationPassword:
       type: http
       scheme: basic
-      description: 'WordPress application passwords (HTTP Basic: username + application password). Authorization
-        endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php. Not required for
-        the read operations documented here.'
+      description: 'WordPress application passwords (HTTP Basic: username + application password). Authorization endpoint: https://www.exentis-group.com/wp/wp-admin/authorize-application.php. Not required for the read operations documented here.'

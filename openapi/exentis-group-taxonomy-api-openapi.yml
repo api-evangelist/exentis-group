@@ -336,8 +336,8 @@ components:
       - code
       - message
   responses:
-    Error404:
-      description: rest_no_route or rest_post_invalid_id — no such route or object.
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
       content:
         application/json:
           schema:
@@ -348,8 +348,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Error400:
-      description: rest_invalid_param — a query parameter failed validation.
+    Error404:
+      description: rest_no_route or rest_post_invalid_id — no such route or object.
       content:
         application/json:
           schema:

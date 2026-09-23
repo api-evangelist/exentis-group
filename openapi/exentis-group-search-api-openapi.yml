@@ -1,13 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Exentis Group Search API
   version: 2.0.0
-  description: 'Full-text search across every publicly readable object on www.exentis-group.com, returning
-    id, title, url, type and subtype. 506 searchable objects at probe time.
+  description: 'Full-text search across every publicly readable object on www.exentis-group.com, returning id, title, url, type and subtype. 506 searchable objects at probe time.
 
 
-    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/
-    and anonymous sample responses.'
+    Derived by API Evangelist from the live WordPress REST API discovery document at https://www.exentis-group.com/wp-json/ and anonymous sample responses.'
   contact:
     name: Exentis Group AG
     email: info@exentis-group.com
@@ -136,6 +134,13 @@ paths:
         '400':
           $ref: '#/components/responses/Error400'
 components:
+  responses:
+    Error400:
+      description: rest_invalid_param — a query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     SearchResult:
       type: object
@@ -196,13 +201,6 @@ components:
       required:
       - code
       - message
-  responses:
-    Error400:
-      description: rest_invalid_param — a query parameter failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     applicationPassword:
       type: http
