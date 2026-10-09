@@ -9,54 +9,6 @@ artifacts:
   authentication/exentis-group-authentication.yml:
     method: derived
     evidence: declared in the artifact
-  collections/exentis-group-blog-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-blog-api
-  collections/exentis-group-blog-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-blog-api
-  collections/exentis-group-blog-categories-api.opencollection.json:
-    method: unknown
-    evidence: no authorship recorded
-  collections/exentis-group-blog-categories-api.postman_collection.json:
-    method: unknown
-    evidence: no authorship recorded
-  collections/exentis-group-categories-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-categories-api
-  collections/exentis-group-categories-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-categories-api
-  collections/exentis-group-languages-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-languages-api
-  collections/exentis-group-languages-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-languages-api
-  collections/exentis-group-media-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-media-api
-  collections/exentis-group-media-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-media-api
-  collections/exentis-group-pages-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-pages-api
-  collections/exentis-group-pages-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-pages-api
-  collections/exentis-group-posts-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-posts-api
-  collections/exentis-group-posts-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-posts-api
-  collections/exentis-group-search-api.opencollection.json:
-    method: derived
-    evidence: openapi/exentis-group-search-api
-  collections/exentis-group-search-api.postman_collection.json:
-    method: derived
-    evidence: openapi/exentis-group-search-api
   conformance/exentis-group-conformance.yml:
     method: derived
     evidence: declared in the artifact
@@ -72,43 +24,10 @@ artifacts:
   examples/exentis-group-examples.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-12T193225.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-13T203944.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-17T064519.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T080027.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T082702.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T114122.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T165047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T191845.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T205517.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-21T110057.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-24T064859.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-24T171257.yml:
+  front-door-ai/2026-09-17.yml:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-08-25T125852.yml:
@@ -195,6 +114,123 @@ artifacts:
   kin/score-2026-09-05T072335.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T144739.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T195450.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T211839.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T011047.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T211804.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T224210.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T200636.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T213054.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T214843.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T232836.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T204815.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T222408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T062655.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T080032.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T204651.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T221936.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-13T214537.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T064754.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T210656.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T225847.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T211329.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T230249.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T210549.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T225339.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-17T211151.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-17T233623.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-18T205255.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-18T231945.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-19T165737.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-19T193153.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-20T205903.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-20T232958.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-21T211425.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-21T233935.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-22T213221.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-23T000603.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T064009.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T090406.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T161608.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/exentis-group-lifecycle.yml:
     method: unknown
     evidence: no authorship recorded
@@ -209,54 +245,6 @@ artifacts:
     evidence: declared in the artifact
   openapi/_original/exentis-group-blog-categories-api-openapi.yml:
     method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-blog-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-categories-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-languages-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-media-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-pages-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-posts-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-search-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  openapi/exentis-group-taxonomy-api-openapi.yml:
-    method: derived
-    evidence: declared in the artifact
-  overlays/exentis-group-blog-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-blog-categories-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-categories-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-languages-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-media-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-pages-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-posts-api-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
-  overlays/exentis-group-search-api-overlay.yaml:
-    method: generated
     evidence: declared in the artifact
   packages/exentis-group-packages.yml:
     method: searched
@@ -283,5 +271,11 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   well-known/exentis-group-well-known.yml:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/exentis-group-www-oauth-authorization-server.json:
+    method: unknown
+    evidence: no authorship recorded
+  well-known/exentis-group-www-oauth-protected-resource.json:
     method: unknown
     evidence: no authorship recorded
