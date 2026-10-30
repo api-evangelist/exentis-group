@@ -64,17 +64,129 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Exentis Group AG is a Swiss industrial technology company in Stetten (canton Aargau), near Zurich, with sites
-in Switzerland, Germany and the United States. It develops and sells the Exentis 3D Screen Printing platform —
-additive manufacturing that builds metal, technical-ceramic and polymer parts layer by layer at room temperature
-by screen printing followed by sintering, positioned for industrial series production rather than prototyping.
+Exentis Group AG is a Swiss industrial technology company headquartered at Im Stetterfeld 2 in Stetten (canton Aargau), near Zurich, with facilities and subsidiaries in Switzerland, Germany and the United States. It develops and sells the Exentis 3D Screen Printing platform — an additive manufacturing technology that builds parts layer by layer at room temperature through screen printing followed by sintering, with no lasers, no support structures and no rework, reaching wall thicknesses and cavities down to roughly 70 micrometres and producing undercuts and closed cavities. The company positions the platform for industrial series production rather than prototyping: a single production system is marketed as capable of millions of components per year, and in pharmaceuticals the process is used to mass-produce tablets with adjustable, controlled drug-release profiles. Its named market segments are pharma, new energy and ultra-fine industrial structures, in metals, technical ceramics and polymers, alongside cleanroom and bioprinting configurations. Exentis holds ISO 9001:2015 certification for its Stetten head office and all German locations, and in Q4 2024 reported roughly USD 22 million in orders for nine production systems shipping to United States customers. It is a manufacturing-equipment vendor, not a software company: it publishes no developer portal, no product API, no SDKs, no pricing and no status page. The only machine-readable API surface on its public host is the WordPress REST API behind www.exentis-group.com, which serves the press room, blog, corporate pages, media library, taxonomies, site search and Polylang language configuration as JSON, read-only without credentials — plus an MCP server endpoint mounted by the WordPress MCP adapter, which is present but returns 401 to anonymous callers.
 
-It is a manufacturing-equipment vendor, not a software company: there is no developer portal, no product API,
-no SDK and no pricing. The API surface profiled here is the WordPress REST API that its own public host serves
-(press room, blog, corporate pages, media library, taxonomies, search and language configuration, read-only
-without credentials), plus a WordPress MCP adapter endpoint that is genuinely mounted but returns HTTP 401 to
-anonymous callers. Nothing in this repository is published or endorsed by Exentis Group.
+**Areas:** Company · 3D Printing · Industrial Manufacturing · Advanced Materials · Technical Ceramics · Metals · Pharmaceutical Manufacturing · New Energy · Switzerland · Hardware
 
-- https://www.exentis-group.com/en/
-- https://www.exentis-group.com/wp-json/
-- https://forgeglobal.com/exentis-group_stock/
+## Exentis Group on APIs.io
+
+Everything profiled for Exentis Group is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/exentis-group/](https://apis.io/providers/exentis-group/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Exentis Group Website (WordPress REST)](https://apis.io/apis/exentis-group/exentis-group-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Exentis Group website at www.exentis-group.com: the route index of the site's content management system,…
+- [Exentis Group MCP Server](https://apis.io/apis/exentis-group/exentis-group-mcp-server/) — An MCP (Model Context Protocol) server endpoint mounted on www.exentis-group.com by the WordPress MCP adapter, alongside the WordPress Abilities API. The…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [mcp-adapter-default-server](https://apis.io/servers/exentis-group/mcp-adapter-default-server/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Exentis Group Agentic Access](https://apis.io/agentic-access/exentis-group/exentis-group-agentic-access/)
+
+#### Collections (8)
+
+Postman and Open Collection request collections.
+
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-blog-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-blog-categories-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-categories-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-languages-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-media-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-pages-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-posts-api/)
+- [Moved to /providers/exentis-group/](https://apis.io/collections/exentis-group/open-exentis-group-search-api/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Exentis Group Authentication](https://apis.io/security/exentis-group/exentis-group-authentication/)
+- [Exentis Group Domain Security](https://apis.io/security/exentis-group/exentis-group-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Exentis Group Plans Pricing](https://apis.io/plans/exentis-group/exentis-group-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Exentis Group Rate Limits](https://apis.io/rate-limits/exentis-group/exentis-group-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.exentis-group.com/en/)
+- [Support](https://www.exentis-group.com/en/contact/)
+- [Blog](https://www.exentis-group.com/en/media/blog/)
+- [Compliance](https://www.exentis-group.com/en/about-exentis/our-certifications/)
+- [Terms of service](https://www.exentis-group.com/en/terms-of-use/)
+- [Privacy policy](https://www.exentis-group.com/en/privacy-notice/)
+
+## API Evangelist rating
+
+**Kin Score 22.5** — emerging · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 67.5 |
+| Contract quality | 6.5 |
+| Contract governance | 4.5 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 30.4 |
+| Access clarity | 28.9 |
+
+**Agent readiness 25.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 24.6** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/exentis-group/](https://apis.io/providers/exentis-group/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Exentis Group: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/exentis-group/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
